@@ -1,0 +1,205 @@
+\section{Markov Decision Process}
+In a Sequential Decision problem an agent interacts with an environment through actions and receives a feedback signal from it.
+The environment is usually modeled as a Markov Decision Process.
+\\
+\begin{definition}
+A Finite Markov Decision Process (MDP) is a tuple $\mc{M} = (\mc{S}, \mc{A}, p, r, \gamma, \mu)$ specified by:
+\begin{itemize}
+    \item a finite set $\mc{S}$ of possible states
+    \item a finite set $\mc{A}$ of actions
+    \item a transition probability function $p: \mc{S} \times \mc{A} \times \mc{S} \to [0, 1]$
+    \item a reward function $r: \mc{S} \times \mc{A} \to \mathbb{R} $
+    \item a discount factor $\gamma \in (0,1)$
+    \item a probability distribution over the initial states $\mu: \mc{S} \to [0, 1]$
+
+\end{itemize}
+\end{definition}
+
+The agent interacts with it at discrete time steps $t = 0,1,2,3,\dots$.
+At each time step the agent receives some representation of the environment's \textit{state}, $S_t \in \mc{S}$, and on that basis
+selects an \textit{action}, $A_t \in \mc{A}(s)$. One time step later, the agent receives a numerical \textit{reward}, $R_{t+1} \in \mc{R} \subset \mathbb{R}$,
+and finds itself in a new state, $S_{t+1}$. The MDP and agent together thereby give rise to a sequence or \textit{trajectory} that begins like this:
+\[ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, \dots\]
+
+The transition probability depends only on the previous state and action thanks to the Markov assumption:
+\[p(s'|s,a) \doteq \mathbb{P}(S_t = s' | S_{t-1}=s, A_{t-1}=a)\]
+The reward function is the expected reward the state action pair:
+\[r(s,a) \doteq \mathbb{E}[R_t | S_{t-1} = s, A_{t-1} = a]\]
+
+The agent choses actions according to a policy. A policy $\pi$ is a distribution over actions given the state:
+\[\pi(a|s)=\mathbb{P}(a|s)\]
+Therefore the policy can be stochastic or deterministic and because it considers only the previous state it is also Markovian.
+The goal of the agent is to learn a policy $\pi$ that maximizes the expected return, where the return is defined as the cumulative discounted reward:
+\[G_t \doteq R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots = \sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\]
+
+Given a policy $\pi$, it is possible to define the utility of each state through a value function.
+\begin{definition}
+    The state value function $v^\pi: \mc{S} \to \mathbb{R}$ of an MDP is the expected return starting from state s and then following policy $\pi$
+    \[v^\pi(s) \doteq \mathbb{E}_\pi[G_t | S_t=s]\]
+\end{definition}
+
+$\mathbb{E}_\pi[.]$ denotes the expected value of a random variable given that the agent follows policy $\pi$. 
+For control purposes, rather than the value of each state we consider the value of each action in each state.
+\begin{definition}
+    The action-value function $q^\pi: \mc{S} \times \mc{A} \to \mathbb{R}$ of an MDP is the expected return starting from state s, taking action a and then following policy $\pi$
+    \[q^\pi(s,a) \doteq \mathbb{E}_\pi[G_t | S_t=s, A_t=a]\]
+\end{definition}
+
+A fundamental property of the value functions is that they satisfy
+the following recursive relationships, called \textit{Bellman expectation equations}:
+
+\begin{equation}
+    \label{eq:bellman_v}
+    v^\pi(s) = \sum_{a \in \mc{A}(s)}\pi(a | s)\left( r(s, a) + \gamma \sum_{s' \in \mc{S}} p(s'|s,a) v^\pi(s') \right)
+\end{equation}
+
+\begin{equation}
+\label{eq:bellman_q}
+q^\pi(s,a) = r(s,a) + \gamma \sum_{s' \in \mc{S}} p(s'|s,a)\sum_{a' \in \mc{A}(s')}\pi(a'|s')q^\pi(s',a')
+\end{equation}
+
+% DIRECT SOLUTION FOR V
+
+\begin{definition}
+    The Markov Reward Process induced by a policy $\pi$ on a MDP is the tuple $(\mc{S}, p^\pi, r^\pi)$ specified by:
+    \begin{itemize}
+    \item the same set $\mc{S}$ from the MDP
+    \item the transition probability function $p^\pi: \mc{S} \times \mc{S} \to [0,1]$ obtained from following policy $\pi$
+    \item the reward function $r: \mc{S} \to \mathbb{R}$ obtained fom following policy $\pi$
+    \end{itemize}
+\end{definition}
+\begin{align*}
+    p^\pi(s'|s) &= \mathbb{P}_\pi(S_t=s'|S_{t-1}=s) = \sum_{a \in \mc{A}(s)}\pi(a|s) p(s'|s,a) \\
+    r^\pi(s) &= \sum_{a \in \mc{A}(s)}\pi(a|s) r(s, a)
+\end{align*}
+
+The bellman expectation equation for $v^\pi$ can be written in matrix form using the induced MRP and a closed form solution can be computed:
+
+\begin{align*}
+    V^\pi &= R^\pi + \gamma P^\pi V^\pi \\
+    V^\pi &= (I - P^\pi)^{-1} R^\pi
+\end{align*}
+
+where $V^\pi \in \mathbb{R}^{|\mc{S}|}$ is the matrix equivalent of $v^\pi$.
+
+% BELLMAN OPERATOR
+
+\begin{definition}
+    The Bellman operator for $V^\pi$ is defined as $T^\pi : \mathbb{R}^{|\mc{S}|} \to \mathbb{R}^{|\mc{S}|}$
+    \[(T^\pi v^\pi)(s) = \sum_{a \in \mc{A}(s)}\pi(a|s)\left(r(s,a) + \gamma \sum_{s' \in \mc{S}}p(s'|s,a)v^\pi(s')\right)\]
+\end{definition}
+
+Using the Bellman operator for $v\pi$, the Bellman expectation equation can be compactly written as:
+\begin{equation*}
+    T^\pi V^\pi = V^\pi
+\end{equation*}
+
+% The Bellman operator for $v^\pi$ exhibits the following properties:
+% \begin{enumerate}
+%     \item $v^\pi$ is a fixed point of the Bellman operator $T^\pi$
+%     \item The Bellman expectation equation is linear in $v^\pi$ and $T^\pi$
+%     \item If $0 < \gamma < 1$ then $T^\pi$ is a contraction with respect to the maximum norm
+% \end{enumerate}
+
+\begin{definition}
+    The Bellman operator for $q^\pi$ is defined as $T^\pi : \mathbb{R}^{|\mc{S} \times \mc{A}|} \to \mathbb{R}^{|\mc{S} \times \mc{A}|}$
+    \[(T^\pi q^\pi)(s, a) = r(s,a) + \gamma \sum_{s' \in \mc{S}}p(s'|s,a)\sum_{a' \in \mc{A}(s')}\pi(a'|s')q^\pi(s,a)\]
+\end{definition}
+
+Using the Bellman operator for $q^\pi$, the Bellman expectation equations can be compactly written as:
+\begin{equation*}
+    T^\pi Q^\pi = Q^\pi
+\end{equation*}
+
+% The Bellman operator for $q^\pi$ exhibits the following properties:
+% \begin{enumerate}
+%     \item $q^\pi$ is a fixed point of the Bellman operator $T^\pi$
+%     \item The Bellman expectation equation is linear in $q^\pi$ and $T^\pi$
+%     \item If $0 < \gamma < 1$ then $T^\pi$ is a contraction with respect to the maximum norm
+% \end{enumerate}
+
+% OPTIMAL VALUE FUNCTIONS
+
+\begin{definition}
+    The optimal state-value function $v^*(s)$ is the maximum state-value function over all policies
+    \[v^*(s) = \max_\pi v^\pi(s)\]
+\end{definition}
+\begin{definition}
+    The optimal action-value function $q^*(s)$ is the maximum action-value function over all policies
+    \[q^*(s,a) = \max_\pi q^\pi(s,a)\]
+\end{definition}
+
+Also the optimal value functions satisfy a recursive relationship, called \textit{Bellman Optimality Equations}
+
+\begin{equation}
+    \label{eq:bellman_optimality_v}
+    \begin{aligned}
+        v^*(s) &= \max_{a \in \mc{A}(s)} q^*(s,a) \\
+        &= \max_{a \in \mc{A}(s)} \left(r(s,a) + \gamma \sum_{s' \in \mc{S}}p(s'|s,a)v^*(s)\right)
+    \end{aligned}
+\end{equation}
+
+\begin{equation}
+    \label{eq:bellman_optimality_q}
+    \begin{aligned}
+        q^*(s, a) &= r(s,a) + \gamma \sum_{s' \in \mc{S}}p(s'|s,a)v^*(s')  \\
+        &= r(s,a) + \gamma \sum_{s' \in \mc{S}}p(s'|s,a)\max_{a' \in \mc{A}(s)} q^*(s',a')
+    \end{aligned}
+\end{equation}
+
+Value functions define a partial ordering over policies
+\[\pi > \pi' \text{ if } v^\pi(s) > v^{\pi'}(s),\quad \forall s \in \mc{S}\]
+
+\begin{theorem}
+    For any Markov Decision Process
+    \begin{enumerate}
+        \item There exists an optimal policy $\pi*$ that is better than or equal to all other policies \\
+        $\pi^* \ge \pi, \quad \forall \pi$
+        \item All optimal policies achieve the optimal value function $v^{\pi^*}(s) = v*(s)$
+        \item All optimal policies achieve the optimal state-value function $q^{\pi^*}(s, a) = q^*(s,a)$
+        \item There is always a deterministic optimal policy for an MDP
+    \end{enumerate}
+\end{theorem}
+
+A determinisitc optimal policy can be found by maximizing over $q^*(s,a)$ (greedy policy)
+\begin{equation*}
+    \pi^*(s,a) = 
+    \begin{cases}
+        1 \quad & \text{if } a = \argmax_{a \in \mc{A}}q^*(s,a)\\
+        0 \quad & \text{otherwise}
+    \end{cases}
+\end{equation*}
+
+% OPTIMAL BELLMAN OPERATOR
+
+\begin{definition}
+    The Bellman optimality operator for $v^*$ is defined as $T^* : \mathbb{R}^{|\mc{S}|} \to \mathbb{R}^{|\mc{S}|}$
+    \[(T^* v^*)(s) = \max_{a \in \mc{A}(s)}\left(r(s,a) + \gamma \sum_{s' \in \mc{S}}p(s'|s,a)v^*(s')\right)\]
+\end{definition}
+
+\begin{definition}
+    The Bellman optimality operator for $q^*$ is defined as $T^* : \mathbb{R}^{|\mc{S} \times \mc{A}|} \to \mathbb{R}^{|\mc{S} \times \mc{A}|}$
+    \[(T^* q^*)(s, a) = r(s,a) + \gamma \sum_{s' \in \mc{S}}p(s'|s,a)\max_{a' \in \mc{A}(s')}q^*(s',a')\]
+\end{definition}
+
+The Bellman operators exhibit the following properties:
+\begin{itemize}
+    \item \textbf{Monotonicity}: if $f_1 \le f_2$ component-wise \\
+    \[T^\pi f_1 \le T^\pi f_2 \quad,\quad T^*f_1 \le T^*f_2\]
+    \item \textbf{Max-Norm Contraction}: for two vectors $f_1$ and $f_2$ \\
+    \begin{align*}
+    \lVert T^\pi f_1 - T^\pi f_2 \rVert _\infty &\le \gamma \lVert f_1 - f_2 \rVert _\infty \\
+    \lVert T^* f_1 - T^* f_2 \rVert _\infty &\le \gamma \lVert f_1 - f_2 \rVert _\infty
+    \end{align*}
+    \item $v^\pi$ is the \textbf{unique fixed point} of $T^\pi$
+    \item $v^*$ is the \textbf{unique fixed point} of $T^*$
+    \item For any vector $f \in \mathbb{R}^{|\mc{S}|}$ and any policy $\pi$, we have \\
+    \[\lim_{k \to \infty}(T^\pi)^kf = v^\pi \quad,\quad \lim_{k \to \infty}(T^*)^kf = v^*\]
+    
+\end{itemize}
+
+Differently from \eqref{eq:bellman_v}, the Bellman optimality equation is non linear due to the presence of a max operation
+and no closed form solution exists for the general case.
+\\
+The bellman optimality equation of an MDP is solved by different iterative methods like Dynamic programming, Linear programming and Reinforcement Learning.
+

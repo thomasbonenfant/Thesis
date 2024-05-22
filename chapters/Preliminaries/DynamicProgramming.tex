@@ -1,0 +1,114 @@
+\section{Dynamic Programming \label{sec:dynamic_programming}}
+The term dynamic programming (DP) refers to a collection of algorithms that can be used to compute optimal policies given a perfect model
+of the environment as a Markov Decision Process. Classical DP algorithms are of limited utility in reinforcement learning both because of their assumption
+of a perfect model and because of their computational expense.
+
+\subsection{Policy Evaluation (Prediction)}
+In Dynamic Programming, policy evaluation is done iteratively using the bellman equation for $v^\pi(s)$ \eqref{eq:bellman_v} as an update rule.
+This update rule is called Bellman Expectation Backup and applying it to each state is called a \textit{sweep}.
+\begin{equation*}
+    \label{eq:policy_evaluation_update}
+    \begin{aligned}
+    v_{k+1}(s) &\doteq \mathbb{E}_\pi[R_{t+1} + \gamma v_k^{S_{t+1}} | S_t = s] \\
+    &= \sum_{a \in \mc{A}} \pi(a|s)[r(s,a) +\gamma \sum_{s' \in \mc{S}} p(s'|s,a) v_k(s')]
+    \end{aligned}
+\end{equation*}
+
+\begin{algorithm}[H]
+    \label{alg:iterative_policy_evaluation}
+    \caption{Iterative Policy Evaluation}
+    \begin{algorithmic}[1]
+        \STATE \textbf{Input:} A Markov Decision Process (MDP) defined by $(S, A, P, R, \gamma)$ and a policy $\pi$
+        \STATE \textbf{Output:} State-value function $V$ for policy $\pi$
+        \STATE \textbf{Initialize} $V(s) \gets 0$ for all $s \in S$
+        \STATE \textbf{Initialize} $\theta \gets$ a small positive number (convergence threshold)
+        \REPEAT
+            \STATE $\Delta \gets 0$
+            \FOR{each $s \in S$}
+                \STATE $v \gets V(s)$
+                \STATE $V(s) \gets \sum_{a \in \mc{A}} \pi(a|s) [r(s,a) + \gamma \sum_{s' \in \mc{S}} P(s', r | s, a) V(s')]$
+                \STATE $\Delta \gets \max(\Delta, |v - V(s)|)$
+            \ENDFOR
+        \UNTIL{$\Delta < \theta$}
+        \STATE \textbf{return} $V$
+    \end{algorithmic}
+\end{algorithm} 
+
+\subsection{Policy Improvement}
+Considering a deterministic policy $\pi$ we can improve it by acting greedily:
+\[\pi'(s) = \argmax_{a \in \mc{A}}q^\pi(s,a)\]
+
+\begin{theorem}
+    \label{th:policy_improvement}
+    Let $\pi$ and $\pi'$ be any pair of deterministic policies such that
+    \begin{equation*}
+    q^\pi(s,\pi'(s)) \ge v^\pi(s) \quad, \quad \forall s \in \mc{S}
+    \end{equation*}
+    Then the policy $\pi'$ must be as good as, or better than $\pi$
+    \begin{equation}
+    v^{\pi'}(s) \ge v^\pi(s) \quad, \quad \forall s \in \mc{S}
+    \end{equation}
+\end{theorem}
+
+If the improvements stops ($v^{\pi'}(s) = v^\pi(s) \, \forall s \in \mc{S}$) then the Bellman Optimality Equation \eqref{eq:bellman_optimality_v}
+holds and $\pi' = \pi$ is an optimal policy $\pi^*$.
+
+The policy iteration algorithm \ref{alg:policy_iteration} alternates between policy evaluation and policy improvements until the policy is stable and
+thus optimal.
+
+\begin{algorithm}[H]
+    \caption{Policy Iteration}
+    \label{alg:policy_iteration}
+    \begin{algorithmic}[1]
+        \STATE \textbf{Input:} A Markov Decision Process (MDP) defined by $(\mc{S}, \mc{A}, p, r, \gamma)$ and a policy $\pi$
+        \STATE \textbf{Output:} Optimal policy $\pi^*$ and Optimal state-value function $V^*(s)$
+        \STATE \textbf{Initialize} $V(s) \in \mathbb{R}$ and $\pi(s) \in \mc{A}(s)$ arbitrarily for all $s \in \mc{S}$
+        \STATE \textbf{Initialize} $\theta \gets$ a small positive number (convergence threshold)
+        \REPEAT
+            \STATE $\Delta \gets 0$
+            \FOR{each $s \in \mc{S}$}
+                \STATE $v \gets V(s)$
+                \STATE $V(s) \gets \sum_{a \in \mc{A}} \pi(a|s) [r(s,a) + \gamma \sum_{s' \in \mc{S}} P(s', r | s, a) V(s')]$
+                \STATE $\Delta \gets \max(\Delta, |v - V(s)|)$
+            \ENDFOR
+        \UNTIL{$\Delta < \theta$}
+        
+        \STATE \textit{policy-stable} $\gets$ \textit{true}
+        \FOR{each $s \in \mc{S}$}
+            \STATE \textit{old-action} $\gets \pi(s)$
+            \STATE $\pi(s) \gets \argmax_{a \in \mc{A}(s)}[r(s,a) + \gamma \sum_{s' \in \mc{S}}p(s'|s,a) * V(s)]$
+            \IF{\textit{old-action} $\neq \pi(s)$}
+                \STATE \textit{policy-stable} $\gets$ \textit{false}
+            \ENDIF
+        \ENDFOR
+        \IF{\textit{policy-stable}}
+            \STATE \textbf{return} $V \approx v^*$ and $\pi \approx \pi^*$
+        \ELSE
+            \STATE go to 5
+        \ENDIF
+    \end{algorithmic}
+\end{algorithm}
+
+A small modification to the policy iteration algorithms lead to the Value iteration algorithm \ref{alg:value_iteration} in which the evaluation is stopped after only one sweep
+and followed by the policy improvement. It basically implements the bellman optimality equation \eqref{eq:bellman_optimality_v} as an update rule:
+\begin{equation*}
+    v_{k+1}(s) = \max_{a \in \mc{A}}\left(r(s,a) + \gamma\sum_{s' \in \mc{S}}p(s'|s,a)v_k(s)\right)
+\end{equation*}
+
+Once $v_k \approx v^*$ we can build a greedy policy $\pi^*$
+
+\begin{algorithm}[H]
+    \caption{Value Iteration}\label{alg:value_iteration}
+    \begin{algorithmic}[1]
+    \STATE Initialize $V(s) = 0$ for all states $s \in S$
+    \REPEAT
+        \STATE $\Delta \gets 0$
+        \FOR{$s \in S$}
+            \STATE $v \gets V(s)$
+            \STATE $V(s) \gets \max_{a \in A(s)} \sum_{s'} P(s'|s,a) \left[ R(s,a,s') + \gamma V(s') \right]$
+            \STATE $\Delta \gets \max(\Delta, |v - V(s)|)$
+        \ENDFOR
+    \UNTIL{$\Delta < \theta$}
+    \STATE \textbf{Output:} $V$ and greedy policy $\pi(s) = \argmax_{a \in \mc{A}(s)}\left(r(s,a) + \gamma\sum_{s' \in \mc{S}}p(s'|s,a)V(s')\right)$
+    \end{algorithmic}
+    \end{algorithm}

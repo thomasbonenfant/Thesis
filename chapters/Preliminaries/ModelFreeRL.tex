@@ -1,0 +1,200 @@
+\section{Reinforcement Learning}
+
+In section \ref{sec:dynamic_programming} a perfect model of the environment was used in order to compute the backup updates.
+Model-Free Reinforcement Learning aims to solve the prediction and control problem only through experience borrowing ideas from Dynamic Programming.
+
+
+\subsection{Temporal-Difference Learning}
+\label{subsec:TD}
+Temporal Difference Learning (TD) is a \textbf{bootstrapping} method: it learns directly from transitions of incomplete episodes using previous estimates.
+
+\subsubsection{Prediction}
+For the prediction problem TD updates its estimate of $v^\pi(s_t)$ only using the next step reward $r_{t+1}$ and its current estimate of $v^\pi(s_{t+1})$.
+
+\begin{equation}
+    \label{eq:TD(0)}
+    V(S_t) \gets V(S_{t+1}) + \alpha [R_{t+1} + \gamma V(S_{t+1}) - V(S_t)]
+\end{equation}
+
+$R_{t+1} + \gamma V(S_{t+1})$ is called TD \textit{target} and the quantity $\delta_t \doteq R_{t+1} + \gamma V(S_{t+1}) - V(S_t)$ is called TD \textit{error}.
+
+
+
+\subsubsection{Control}
+
+For the Control problem TD algorithms can be divided into two categories:
+\begin{enumerate}
+    \item On-Policy Learning
+    \item Off-Policy Learning
+\end{enumerate}
+
+In On Policy Learning the algorithmy directly improves the policy $\pi$ used to collect the samples from the environment while
+Off Policy Learning allows to improve a policy $\pi'$ different from the one that interacts with the environment.
+\\
+One major problem in Model-Free reinforcement learning is the \textit{Exploration-Exploitation} tradeoff:
+Should the agent try out new actions to discover their potential rewards or exploit its current knowledge in order to maximize the expected reward?
+\\
+\begin{definition}
+    A soft policy $\pi$ is a policy with $\pi(a|s) > 0$, $\forall s \in \mc{S}$ and $\forall a \in \mc{A}(s)$.
+\end{definition}
+
+\begin{definition}
+    An $\epsilon$-soft policy $\pi$ is a policy with $\pi(s,a) \ge \frac{\epsilon}{|\mc{A}(s)|}$, $\forall s \in \mc{S}$ and $\forall a \in \mc{A}(s)$ and some $\epsilon > 0$.
+\end{definition}
+
+\begin{definition}
+    An $\epsilon$-greedy policy $\pi$ is a policy with:
+    \begin{equation*}
+        \pi(a|s) =
+        \begin{cases}
+            \frac{\epsilon}{|\mc{A}|} + 1 - \epsilon & \text{if } a = \argmax_{a' \in \mc{A}}Q(s, a') \\
+            \frac{\epsilon}{|\mc{A}|}                & \text{otherwise}
+        \end{cases}
+    \end{equation*}
+\end{definition}
+
+The $\epsilon$-greedy policy is a specific example of $\epsilon$-soft policy that is the closest to a greedy policy.
+It is the simplest idea for ensuring continual exploration while acting greedily.
+
+\begin{theorem}
+    For any $\epsilon$-greedy policy $\pi$, the $\epsilon$-greedy policy $\pi'$ with respect to $q^\pi$ is an improvement.
+    \begin{align*}
+        q^\pi(s,\pi'(s))    &= \sum_{a \in \mc{A}}\pi'(a|s)q^\pi(s,a) \\
+                            &= \frac{\epsilon}{m}\sum_{a \in \mc{A}}q^\pi(s,a) + (1 - \epsilon)\max_{a \in \mc{A}}q^\pi(s,a) \\
+                            &\ge \frac{\epsilon}{m}\sum_{a \in \mc{A}}q^\pi(s,a) + (1 - \epsilon)\sum_{a \in \mc{A}}\frac{\pi(a|s) - \frac{\epsilon}{m}}{1 - \epsilon}q^\pi(s,a) \\
+                            &= \sum_{a \in \mc{A}}\pi(a|s)q^\pi(s,a) = v^\pi(s)
+    \end{align*}
+    with $m = |\mc{A}|$. \\
+    Therefore from the policy improvement theorem \ref{th:policy_improvement}, $v^{\pi'}(s) \ge v^\pi(s)$.
+\end{theorem}
+
+\subsubsection{Sarsa: On-policy TD Control}
+Applying the same TD method \eqref{eq:TD(0)} used to estimate $v^\pi$ to the action-value function $q^\pi$ leads to the following update rule:
+\begin{equation*}
+    Q(S_t, A_t) \gets Q(S_t, A_t) + \alpha [R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t)]
+\end{equation*}.
+
+This rule uses every element of a quintuple of events, $(S_t, A_t, R_{t+1}, S_{t+1}, A_{t+1})$, that make up a transition from one state-action pair to the next.
+This quintuple gives rise to thename \textit{Sarsa} for the algorihtm.
+
+It is straightforward to design an on-policy control algorithm based on the Sarsa prediction method. As in all on-policy methods, we continually estimate $q^\pi$
+for the behavior policy $\pi$, and at the same time change $\pi$ towards greediness with respect to $q^\pi$.
+
+\begin{algorithm}[H]
+    \caption{Sarsa}
+    \label{alg:sarsa}
+    \begin{algorithmic}[1]
+        \STATE Initialize $Q(s,a)$ arbitrarily
+        \LOOP
+            \STATE Initialize $S$
+            \STATE Choose $A$ from $S$ using policy derived from $Q$ (e.g. $\epsilon$-greedy)
+            \REPEAT
+                \STATE Take action $A$, observe $R$,$S'$
+                \STATE Choose $A'$ from $S'$ using policy derived from $Q$ (e.g. $\epsilon$-greedy)
+                \STATE $Q(S,A) \gets Q(S,A) + \alpha[R + \gamma Q(S',A') - Q(S, A)]$
+                \STATE $S \gets S'$; $A \gets A'$
+            \UNTIL{$S$ is terminal}
+        \ENDLOOP
+    \end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Q-Learning: Off-policy TD Control}
+One of the early breakthroughs in reinforcement learning was the development of an off-policy TD control algorithm known as \textit{Q-Learning}
+\cite{Watkins:1989}.
+
+In this algorithm the learned action-value function $Q$ directly approximates $q^*$, the optimal action-value function, independent of the 
+policy being followed:
+\begin{equation*}
+    Q(S_t,A_t) \gets Q(S_t,A_t) + \alpha [R_{t+1} + \gamma \max_{a \in \mc{A}}Q(S_{t+1}, a) - Q(S_t, A_t)]
+\end{equation*}
+
+\begin{algorithm}[H]
+    \caption{Q-Learning}
+    \label{alg:q-learning}
+    \begin{algorithmic}[1]
+        \STATE Initialize $Q(s,a)$ arbitrarily
+        \LOOP
+            \STATE Initialize $S$
+            \STATE Choose $A$ from $S$ using policy derived from $Q$ (e.g. $\epsilon$-greedy)
+            \REPEAT
+                \STATE Take action $A$, observe $R$,$S'$
+                \STATE $Q(S,A) \gets Q(S,A) + \alpha[R + \gamma \max_{a \in \mc{A}}Q(S',a) - Q(S, A)]$
+                \STATE $S \gets S'$
+            \UNTIL{$S$ is terminal}
+        \ENDLOOP
+    \end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Convergence of Sarsa and Q-Learning}
+
+\subsection{Reinforcement Learning Taxonomy}
+% Tutte le distinzioni dei vari algoritmi
+This subsection includes a brief overview of the whole Reinforcement Learning taxonomy. \ref{subsec:TD} presented two well known TD tabular algorithms
+but often real world scenarios have to be modeled with complex state and action spaces with more dimensions resulting in intractable problems.
+Moreover these spaces could be continuous and tabular methods cannot be applied anymore.
+
+\subsubsection{Function Approximation}
+When the state space is too big for tabular reinforcement learning approximate solution methods are used instead.
+Typically the value function (or action-value function) is parameterized with a weight vector $\mathbf{w} \in \mathbb{R}^d$ and $d \ll |\mc{S}|$:
+\begin{equation*}
+    \hat v(s, \mathbf{w}) \approx v_\pi(s)
+\end{equation*}
+
+For example $\hat v$ might be a linear function in features of the state, with $\mathbf{w}$ the vector of feature weights.
+More generally, $\hat v$ might be the function computed by a multi-layer artificial neural network or even the function computed
+by a decision tree.
+\\
+
+In addition, function approximation allow continous state spaces to be managed without the need for discretization techniques.
+
+\subsubsection{Value-Based Algorithms}
+All the algorithms that seek to learn the action values and then select actions based on their estimated values are called Value-Based Algorithms.
+The temporal difference algorithms presented in \ref{subsec:TD} are all value-based algorithms.
+\subsubsection{Policy-Based Algorithms}
+Differently from Value-Based Algorithms Policy-Based algorithms seek to learn a \textit{parameterized policy} that can select actions without consulting
+a value function:
+\begin{equation*}
+    \pi(a|s,\bm{\theta}) = \mathbb{P}(A_t = a | S_t = s, \bm{\theta}_t = \bm{\theta})
+\end{equation*}
+
+One important consequence of the use of parameterized policies is that they offer practical ways of dealing with large action spaces,
+even continuous spaces with an inifinite number of actions. Instead of computing the learned probability for each of themany actions,
+we instead learn statistics of the probability distribution. For example, the action set might be the real numbers, with actions chosen
+from a normal distribution:
+
+\begin{equation*}
+    \pi(a|s,\bm{\theta}) = \frac{1}{\sigma(s, \bm{\theta})\sqrt{2 \pi}}\exp\left(-\frac{(a - \mu(s, \bm{\theta}))^2}{2\sigma(s,\bm{\theta})^2}\right)
+\end{equation*}
+
+
+\subsubsection{Actor-Critic Algorithms}
+A combination of value-based methods and policy-based methods gives rise to Actor-Critic algorithms. Actor critic algorithms
+learn a parameterized policy (Actor) and a value function (Critic).
+The actor is updated in the direction that maximizes the expected reward using gradients derived from the critic's feedback.
+The critic estimates the actions taken by the actor.
+
+\subsection{Deep Reinforcement Learning}
+In recent years Deep Learning techniques applied to Reinforcement Learning techniques have shown to yield very good results.
+The first notable example came from Mnih et al. \cite{DQN} modifying Q-Learning to work with Deep Neural Networks.
+At that time, their approach achieved state of the art on multiple Atari Games with no prior knowledge and same hyperparameters for each game. This algorithm, called
+\textit{Deep Q-Networks} (DQN) uses an \textit{experience replay buffer} to store played transitions for sampling minibatches.
+These minibatches are used to train the Q-Network using Stochastic Gradient Descent with backpropagation on the neural network.
+
+Unfortunately nonlinear function approximators like neural networks come with a theoretical cost:
+convergence to an optimum is only guaranteed locally. Despite this limitation, DQN and other deep reinforcement learning approaches remain the most widely used methods in the field 
+due to their empirical success and ability to handle complex, high-dimensional state spaces.
+
+
+Below, a state of the art algorithm called Soft Actor Critic (SAC) \cite{SAC, SAC_modified} is presented.
+
+\subsubsection{Soft Actor Critic}
+
+
+
+
+
+
+
+
+
+

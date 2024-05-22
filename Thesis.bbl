@@ -1,0 +1,38 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Haarnoja et~al.(2018{\natexlab{a}})Haarnoja, Zhou, Abbeel, and
+  Levine]{SAC}
+T.~Haarnoja, A.~Zhou, P.~Abbeel, and S.~Levine.
+\newblock Soft actor-critic: Off-policy maximum entropy deep reinforcement
+  learning with a stochastic actor.
+\newblock \emph{CoRR}, abs/1801.01290, 2018{\natexlab{a}}.
+\newblock URL \url{http://arxiv.org/abs/1801.01290}.
+
+\bibitem[Haarnoja et~al.(2018{\natexlab{b}})Haarnoja, Zhou, Hartikainen,
+  Tucker, Ha, Tan, Kumar, Zhu, Gupta, Abbeel, and Levine]{SAC_modified}
+T.~Haarnoja, A.~Zhou, K.~Hartikainen, G.~Tucker, S.~Ha, J.~Tan, V.~Kumar,
+  H.~Zhu, A.~Gupta, P.~Abbeel, and S.~Levine.
+\newblock Soft actor-critic algorithms and applications.
+\newblock \emph{CoRR}, abs/1812.05905, 2018{\natexlab{b}}.
+\newblock URL \url{http://arxiv.org/abs/1812.05905}.
+
+\bibitem[Mnih et~al.(2013)Mnih, Kavukcuoglu, Silver, Graves, Antonoglou,
+  Wierstra, and Riedmiller]{DQN}
+V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~Graves, I.~Antonoglou, D.~Wierstra, and
+  M.~A. Riedmiller.
+\newblock Playing atari with deep reinforcement learning.
+\newblock \emph{CoRR}, abs/1312.5602, 2013.
+\newblock URL \url{http://arxiv.org/abs/1312.5602}.
+
+\bibitem[Watkins(1989)]{Watkins:1989}
+C.~J. C.~H. Watkins.
+\newblock \emph{Learning from Delayed Rewards}.
+\newblock PhD thesis, King's College, Cambridge, UK, May 1989.
+\newblock URL \url{http://www.cs.rhul.ac.uk/~chrisw/new_thesis.pdf}.
+
+\end{thebibliography}
