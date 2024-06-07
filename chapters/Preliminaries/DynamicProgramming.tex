@@ -1,7 +1,7 @@
 \section{Dynamic Programming \label{sec:dynamic_programming}}
 The term dynamic programming (DP) refers to a collection of algorithms that can be used to compute optimal policies given a perfect model
 of the environment as a Markov Decision Process. Classical DP algorithms are of limited utility in reinforcement learning both because of their assumption
-of a perfect model and because of their computational expense.
+of a perfect model and because of their computational expense
 
 \subsection{Policy Evaluation (Prediction)}
 In Dynamic Programming, policy evaluation is done iteratively using the bellman equation for $v^\pi(s)$ \eqref{eq:bellman_v} as an update rule.
@@ -26,7 +26,7 @@ This update rule is called Bellman Expectation Backup and applying it to each st
             \STATE $\Delta \gets 0$
             \FOR{each $s \in S$}
                 \STATE $v \gets V(s)$
-                \STATE $V(s) \gets \sum_{a \in \mc{A}} \pi(a|s) [r(s,a) + \gamma \sum_{s' \in \mc{S}} P(s', r | s, a) V(s')]$
+                \STATE $V(s) \gets \sum_{a \in \mc{A}} \pi(a|s) [r(s,a) + \gamma \sum_{s' \in \mc{S}} P(s'| s, a) V(s')]$
                 \STATE $\Delta \gets \max(\Delta, |v - V(s)|)$
             \ENDFOR
         \UNTIL{$\Delta < \theta$}
@@ -50,7 +50,7 @@ Considering a deterministic policy $\pi$ we can improve it by acting greedily:
     \end{equation}
 \end{theorem}
 
-If the improvements stops ($v^{\pi'}(s) = v^\pi(s) \, \forall s \in \mc{S}$) then the Bellman Optimality Equation \eqref{eq:bellman_optimality_v}
+If the improvement stops ($v^{\pi'}(s) = v^\pi(s) \, \forall s \in \mc{S}$) then the Bellman Optimality Equation \eqref{eq:bellman_optimality_v}
 holds and $\pi' = \pi$ is an optimal policy $\pi^*$.
 
 The policy iteration algorithm \ref{alg:policy_iteration} alternates between policy evaluation and policy improvements until the policy is stable and
@@ -68,7 +68,7 @@ thus optimal.
             \STATE $\Delta \gets 0$
             \FOR{each $s \in \mc{S}$}
                 \STATE $v \gets V(s)$
-                \STATE $V(s) \gets \sum_{a \in \mc{A}} \pi(a|s) [r(s,a) + \gamma \sum_{s' \in \mc{S}} P(s', r | s, a) V(s')]$
+                \STATE $V(s) \gets \sum_{a \in \mc{A}} \pi(a|s) [r(s,a) + \gamma \sum_{s' \in \mc{S}} P(s' | s, a) V(s')]$
                 \STATE $\Delta \gets \max(\Delta, |v - V(s)|)$
             \ENDFOR
         \UNTIL{$\Delta < \theta$}
@@ -105,7 +105,7 @@ Once $v_k \approx v^*$ we can build a greedy policy $\pi^*$
         \STATE $\Delta \gets 0$
         \FOR{$s \in S$}
             \STATE $v \gets V(s)$
-            \STATE $V(s) \gets \max_{a \in A(s)} \sum_{s'} P(s'|s,a) \left[ R(s,a,s') + \gamma V(s') \right]$
+            \STATE $V(s) \gets \max_{a \in A(s)} \sum_{s'} P(s'|s,a) \left[ R(s,a) + \gamma V(s') \right]$
             \STATE $\Delta \gets \max(\Delta, |v - V(s)|)$
         \ENDFOR
     \UNTIL{$\Delta < \theta$}

@@ -1,8 +1,24 @@
 \chapter{Preliminaries}
 \label{ch:Preliminaries}
 
-This chapter starts introducing what a Markov Decision Process is and how it is used to formally define a sequential decision problem.
-Next it describes what a policy is and its associated utility functions used to evaluate its performance.
+% Introduction Text
+
+In this chapter, we introduce the fundamental theories necessary for understanding and solving sequential decision problems.
+The chapter is organized into three main sections to provide a comprehensive overview of the foundational concepts.
+
+The first section delves into the Markov Decision Process (MDP) framework, which is essential for modeling sequential 
+decision problems. This section covers the formal definition of MDPs and discusses the theoretical solution for 
+these problems, highlighting the limitations of this closed-form solution in practical scenarios.
+
+The second section explores Dynamic Programming (DP), an iterative approach to solving MDPs. Here, we examine the 
+key principles and algorithms of dynamic programming, which offer a more feasible solution method compared 
+to the theoretical closed-form solution.
+
+The final section introduces Reinforcement Learning (RL), a methodology that builds upon the results of dynamic programming. 
+Reinforcement learning provides a framework for agents to learn optimal behaviors through interactions with their environment,
+making it a powerful tool for solving complex sequential decision problems.
+
+The majority of the following information is derived from \cite{Sutton1998}.
 
 \input{chapters/Preliminaries/MDP}
 \input{chapters/Preliminaries/DynamicProgramming}
