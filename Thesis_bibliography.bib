@@ -104,3 +104,39 @@
       archivePrefix={arXiv},
       primaryClass={cs.AI}
 }
+
+@Article{Kober2013,
+  author  = {Kober, Jens AND Bagnell, J. Andrew AND Peters, Jan},
+  title   = {Reinforcement Learning in Robotics: A Survey},
+  journal = {International Journal of Robotics Research},
+  year    = {2013},
+  volume  = {32},
+  number  = {11},
+  pages   = {1238--1274},
+  doi     = {10.1177/0278364913495721},
+  file    = {http://www.jenskober.de/publications/Kober2013IJRR.pdf},
+  oa      = {green},
+}
+
+@inproceedings{Atacom,
+  title     = {Robot Reinforcement Learning on the Constraint Manifold},
+  author    = {Liu, Puze and Tateo, Davide and Bou-Ammar, Haitham and Peters, Jan},
+  booktitle   = {Proceedings of the 5th Conference on Robot Learning},
+  pages       = {1357--1366},
+  year        = {2022},
+  editor      = {Faust, Aleksandra and Hsu, David and Neumann, Gerhard},
+  volume      = {164},
+  series      = {Proceedings of Machine Learning Research},
+  publisher   = {PMLR},
+}
+
+@phdthesis{Laud2004,
+author = {Laud, Adam Daniel},
+advisor = {Dejong, Gerald},
+title = {Theory and application of reward shaping in reinforcement learning},
+year = {2004},
+publisher = {University of Illinois at Urbana-Champaign},
+address = {USA},
+abstract = {Applying conventional reinforcement to complex domains requires the use of an overly simplified task model, or a large amount of training experience. This problem results from the need to experience everything about an environment before gaining confidence in a course of action. But for most interesting problems, the domain is far too large to be exhaustively explored. We address this disparity with reward shaping—a technique that provides localized feedback based on prior knowledge to guide the learning process. By using localized advice, learning is focused into the most relevant areas, which allows for efficient optimization, even in complex domains. We propose a complete theory for the process of reward shaping that demonstrates how it accelerates learning, what the ideal shaping rewards are like, and how to express prior knowledge in order to enhance the learning process. Central to our analysis is the idea of the reward horizon, which characterizes the delay between an action and accurate estimation of its value. In order to maintain focused learning, the goal of reward shaping is to promote a low reward horizon. One type of reward that always generates a low reward horizon is opportunity value. Opportunity value is the value for choosing one action rather than doing nothing. This information, when combined with the native rewards, is enough to decide the best action immediately. Using opportunity value as a model, we suggest subgoal shaping and dynamic shaping as techniques to communicate whatever prior knowledge is available. We demonstrate our theory with two applications: a stochastic gridworld, and a bipedal walking control task. In all cases, the experiments uphold the analytical predictions; most notably that reducing the reward horizon implies faster learning. The bipedal walking task demonstrates that our reward shaping techniques allow a conventional reinforcement learning algorithm to find a good behavior efficiently despite a large state space with stochastic actions.},
+note = {AAI3130966}
+}
