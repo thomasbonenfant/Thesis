@@ -1,8 +1,15 @@
 \chapter{Related Works}
 In this chapter we review the main challenges in the application of reinforcement learning in the
-field of robotics. The majority of this information is derived from \cite{Kober2013}.
+field of robotics and what are the state of the art algorithms and techniques. 
+The information about the challenges encountered applying reinforcement is derived from \cite{Kober2013}.
+Next, hierarchical reinforcement learning is introduced and a brief overview of the different frameworks is presented.
 
 \section{Reinforcement Learning in Robotics}
+Reinforcement Learning enables robots to learn complex behaviors through interaction with the environment and maximizing the cumulative rewards.
+This can be particularly advantageous for tasks that are too intricate or dynamic to be effectively addressed by conventional methods.
+On the other hand traditional robotics techniques, such as classical control theory and model-based approaches, are typically more predictable and easier to implement.
+While these techniques may lack the flexibility and adaptability of reinforcement learning, they offer a more straightforward and less resource-intensive path to deploying
+functional robotic systems. Reinforcement Learning in Robotics has however many challenges to face, and these are described in the next subsection.
 
 \subsubsection{Curse of Dimensionality}
 Robotics systems often have to deal with high dimensional states and actions due to the many degrees of freedom (DoFs) of modern
@@ -14,7 +21,7 @@ In this example, we have $2\times\left(7 + 3\right)=20$ state dimensions and 7-d
 This high dimensionality presents significant challenges in terms of computational complexity 
 and the efficiency of learning algorithms.
 
-\begin{figure}[b]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{Images/ball_paddling.png}
     \caption{Ball Paddling Robot}
@@ -88,7 +95,14 @@ receive such a reward so rarely that it is unlikely to ever succeed in the lifet
 relying on simpler binary rewards, we frequently need to include intermediate rewards in the scalar reward function
 to guide the learning process to a reasonable solution, a process known as \textit{reward shaping} \cite{Laud2004}.
 
-\section{Robot Reinforcement Learning on the Constraint Manifold}
+\subsubsection{SAC in Robotics}
+SAC \cite{SAC} achieves state of the art performance for robotic tasks in simulation and real-world scenarios as it is able to
+handle continuous state-action spaces and is an off-policy algorithm.
+As described in \cite{SAC_modified}, the authors successfully used SAC to learn policies for a quadrupedal locomotion task and
+a dexterous hand manipulation task in real-world. Being an off-policy algorithm SAC is more sample efficient than other on-policy
+algorithms like PPO \cite{PPO} and this helps mitigating the curse of real-world samples.
+
+\section{ATACOM}
 One important factor that cannot be neglected in real-world applications is the necessity of satisfying constraints.
 Many practical considerations can be formulated in the form of constraints, such as safety and mechanical viability. For example,
 in the robot manipulation task, the robot should not take actions that damage the environment and cannot take actions that exceed
@@ -100,6 +114,67 @@ This section describes one of them, called ATACOM \cite{Atacom}.
 ATACOM transforms a constrained RL problem into a typical unconstrained RL problem. Hence the problem can be addressed by any
 model-free RL algorithm while maintaining the constraints below the tolerance. Furthermore, ATACOM can handle both equality and inequality
 constraints.
+
+The state variable $s \in \mc{S}$ is decomposed in the directly controllable state $q \in \mc{Q}$ and uncontrollable state, i.e., $s = \left[\begin{smallmatrix} \bm{q} & \bm{x}\end{smallmatrix}\right]^\intercal$.
+We assume that the constraints $\bm{c}(\bm{q}) \le \bm{0}$ are known and depend purely on the controllable state. 
+
+The idea behind ATACOM is to construct the constraint manifold $\bm{\mc{M}_c} : \bm{c}(\bm{q}) = \bm{0}$, determine the bases $\bm{N_c}$ of the tangent space $\bm{\mc{T}_c}$
+and sample state velocity in the tangent space (Figure \ref{fig:constraint_manifold}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Images/constraint_manifold.png}
+    \caption[ATACOM]{
+        Acting on the Tangent Space of the Constraint Manifold. The constraint set $\bm{c}(\bm{q}) = \bm{0}$ is a differentiable manifold
+        $\mc{M}_c$ embedded in the original state space. A set of basis $\bm{N}_c$ is used to represent the span of tangent space $\bm{\mc{T}}_c$.
+        The tangent space velocity/acceleration can be determined by a coordinate based on the basis, and the control action is determined based on the tangent
+        space velocity/acceleration, the resulting trajectory is maintained on the constraint manifold.
+        }
+    \label{fig:constraint_manifold}
+\end{figure}
+
+% The state constraints are defined as
+% \begin{equation}
+%     \label{eq:state_constraints}
+%     \bm{f}(\bm{q}) = \bm{0},\quad \bm{g}(\bm{q}) \le \bm{0},
+% \end{equation}
+% where $\bm{f} : \mathbb{R}^Q \to \mathbb{R}^F, \bm{g} : \mathbb{R}^Q \to \mathbb{R}^G$ are two $C^2$ mappings for $F$ equality and $G$ inequality
+% constraints, and $F < q$. We add the slack variable $\bm{\mu} \in \mathbb{R}^G$ in inequality constraints to convert the original constraints \eqref{eq:state_constraints}
+% into equality constraints
+
+% \begin{equation}
+%     \label{eq:state_constraints_2}
+%     \bm{c(q,\mu)} =
+%     \begin{bmatrix}
+%         \bm{f}(\bm{q}) & \bm{g}(\bm{q}) + \frac{1}{2}\bm{\mu}^2
+%     \end{bmatrix} = \bm{0}.
+% \end{equation}
+
+% The constaints set \eqref{eq:state_constraints_2} is a $(F + G)$ dimensional manifold embedded in $(Q + G)$ dimensional space. We calculate the time derivative
+% of \eqref{eq:state_constraints_2}
+
+% \begin{equation}
+%     \bm{\dot{c}}(\bm{q},\bm{\mu},\bm{\dot{q}},\bm{\dot{\mu}}) = 
+%     \begin{bmatrix}
+%         \bm{J_f}(\bm{q}) & \bm{0} \\
+%         \bm{J_g}(\bm{q}) & diag(\bm{\mu})
+%     \end{bmatrix}
+%     \begin{bmatrix}
+%         \bm{\dot{q}} \\
+%         \bm{\dot{\mu}}
+%     \end{bmatrix}
+%     = \bm{J_c}(\bm{q},\bm{\mu})
+%     \begin{bmatrix}
+%         \bm{\dot{q}} \\
+%         \bm{\dot{\mu}}
+%     \end{bmatrix},
+% \end{equation}
+
+% with the jacobians $\bm{J_f} \in \mathbb{R}^{F \times Q}$ and $\bm{J_g} \in \mathbb{R}^{G \times Q}$ of $\bm{f}(\bm{q})$ and $\bm{g}(\bm{q})$, respectively.
+% Both Jacobians are combined into the Jacobian Matrix $\bm{J_c}(\bm{q}, \bm{\mu}) \in \mathbb{R}^{(F+G) \times (Q + G)}$ of the complete constraint set.
+
+% We can find the null space matrix $\bm{N_c}(\bm{q}, \bm{\mu}) = Null\left[\bm{J_c}(\bm{q},\bm{\mu})\right] \in \mathbb{R}^{(Q+G)\times(Q-F)}$ via SVD.
+
 
 The advantages of ATACOM can be summarized as follows:
 \begin{itemize}
@@ -125,6 +200,124 @@ As a downside this method requires
 %     and $\mc{C}: \left{c_i : \mc{S} \to \mathbb{R} | i \in 1, \dots, k}$ is a set of \textit{immediate state-constraint} functions.
 % \end{definition}
 
-% The state variable $s \in \mc{S}$ is decomposed in the directly controllable state $q \in \mc{Q}$ and uncontrollable state 
 
+\section{Hierarchical Reinforcement Learning}
+When tasks are too complex, it is often easier to decompose it into more manageable sub-tasks. Hierarchical Reinforcement Learning
+is a learning paradigm that aims to achieve this using temporal abstraction:
+
+Reasoning on multiple time scales using temporally extended actions (sub-behaviors) that consist of a sequence of primitive actions
+and possibly other temporally extended actions.
+
+The following information is derived from \cite{survey_mdpi}.
+
+\subsection{Options Framework}
+Here, a popular framework to achieve temporal abstraction in reinforcement learning, the \textit{option framework} \cite{Options}, is described.
+
+\begin{definition}
+    An Option is a tuple $\omega = (I, \pi, \beta)$ where
+    \begin{itemize}
+        \item $I \in \mc{S}$ is the initiation set, which defines the states in which the option can be initiated
+        \item $\beta: \mc{S} \rightarrow [0, 1]$ is the termination condition that decides when an option will halt its execution
+        \item $\pi: \mc{S} \times \mc{A} \rightarrow [0,1]$ is the intra-option policy.
+    \end{itemize}
+\end{definition}
+
+A policy-over-options $\pi(\omega|s_t)$ selects an option $\omega \in \Omega$ given a state $s_t$. This additional policy can be useful
+to select the best options, when the current state belongs to multiple option initiation sets. It can also be used as an alternative to defining
+an initiation set for each option.
+
+The most often used execution model is the call-and-return model. This approach is often also called hierarchical-execution.
+In this model a policy-over-options selects an option according to the current state. The agent follows this option until the 
+agent triggers the termination condition of the active option.
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Images/options_framework.png}
+    \caption{Options framework}
+    \label{fig:options_framework}
+\end{figure}
+
+Motion templates \cite{motion_templates} are options that can be parameterized in order to adapt the behavior of its intra-option policy.
+This is often useful in a continuous state-space. A motion template could for example be discovered for throwing a ball, The exhibited
+force and angle might be parameters of this template. Learning a single policy for each possible combination of force-angle would be infeasible.
+
+\subsubsection{Option-Critic Framework}
+
+The task of learning options can be decoupled from learning the policy-over-options. The agent can focus first on finding useful temporal
+abstractions that simplify the environment. However this approach of bottom-up learning risks wasting time learning sub-behaviors which might not be required
+in order to solve the problem at hand. Formulating options development and discovery as part of an optimization problem tasked with optimizing
+total future reward is an alternative approach which allows options and a policy-over-options to be learned end-to-end.
+
+The Option-Critic architecture (OC) \cite{option-critic} is an end-to-end framework capable of discovering and developing options without
+using prior knowledge. The actor part in the OC framework consists of multiple intra-options policies. The critic part is capable of assessing discounted
+future value of options and actions.
+
+PPOC \cite{PPOC} extends the Option-Critic algorithm for continuous control tasks using PPO \cite{PPO}, a popular on-policy deep reinforcement learning algorithm.
+
+\begin{figure}[H]
+    \centering
+    \label{fig:options_critic}
+    \caption{Option-Critic Architecture.}
+    \includegraphics[scale=0.2]{Images/option-critic.png}
+\end{figure}
+
+\subsection{Goal-Conditional Framework}
+
+Options are difficult to scale to support numerous sub-behaviors. Training options is inefficient because most commonly only
+one option is trained at the time and no components are shared between them.
+
+Here a different approach is presented, the goal-conditional framework.
+
+The goal-conditional framework models sub-behaviors differently. In order to support a large amount of sub-behaviors
+a goal-vector $z \in Z$ is utilized to express different sub-behaviors.
+The goal-vector characterizes the desired sub-behavior activated by a higher-level manager to a lower-level worker.
+The idea is illustrated in Figure \ref{fig:goal-conditional}. This goal-vector can be discrete in order to express
+a limited number of abstractions, but it is also possible to use a continuous vector to express an infinite number of possible abstractions.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.3\textwidth]{Images/goal-conditional.png}
+    \caption{Goal-Conditional framework.}
+    \label{fig:goal-conditional}
+\end{figure}
+
+Here are two particular approaches used in the goal-conditional framework:
+
+\begin{itemize}
+    \item General Value Function (GVF)
+    \item Information Hiding
+\end{itemize}
+
+In the \textbf{General Value Function} \cite{Horde} approach different prediction targets are used besides the extrinsic reward signal.
+Examples of such targets are, learning how many steps there are
+before an episodic control problem terminates, or learning the distance before hitting a wall.
+Learning different value functions, can be seen as a way to build general knowledge about
+how different aspects of the environment can be manipulated. The intuition behind this
+idea is that if we know how our environment works, we should be able to easier achieve
+goals in this environment. Different value functions can essentially be utilized as temporal
+abstractions, allowing the agent to reason on a higher level of abstraction.
+The Horde algorithm \cite{Horde} is capable of learning different targets using independent sub-agents called demons.
+Similarly, the Universal Value Function Approximator (UVFA) learns a single value function $V(s, z)$ where the goal-state $z$ is a parameter.
+UVFA has also been demonstrated to work in a RL setting, by using Horde.
+
+In the \textbf{Information Hiding} \cite{Feudal_rl} approach no single part of the architecture has access to all available information and different parameters
+need to collaborate. While the GVF framework focuses on decomposing the reward function, information hiding focuses on decomposing the state-space.
+
+
+Algorithms such as HIRO \cite{HIRO} are capable of learning diverse sets of sub-behaviors and their composition, end-to-end, in function
+of the extrinsic reward. The HIRO architecture, illustrated in Figure \ref{fig:HIRO}.
+In HIRO, the higher level communicates directional subgoals. These subgoals are represented using the state-space and the
+lower level is densely rewarded for moving towards this subgoal-state. Other end-to-end algorithms such as FeUdal Networks \cite{FuN}
+use a low dimensional latent space to represent sub-behaviors.
+The HIRO approach focuses on sample efficiency by supporting off-policy learning. Off-policy corrections are used to
+make up for the combinatorial effects introduced by simultaneously learning a lower-level policy and a higher-level policy.
+This correction re-labels past experience with a high-level action, in order to maximize the probability of the past lower-level actions.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/HIRO.png}
+    \caption{HIRO architecture.}
+    \label{fig:HIRO}
+\end{figure}
 

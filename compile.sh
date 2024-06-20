@@ -12,4 +12,5 @@ docker run --rm -it -v $(pwd):/workdir texlive/texlive pdflatex $filetex
 # ls -p -d * | grep -v "/$" | grep -E "(log|out|toc|lof|lot)$" | xargs rm
 
 # open pdf
-okular *.pdf
+# okular *.pdf
+brave *.pdf
