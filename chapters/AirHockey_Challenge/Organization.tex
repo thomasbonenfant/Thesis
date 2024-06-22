@@ -1,0 +1,68 @@
+\section{Challenge organization}
+The challenge consists in three simulated stages: Warm Up, Qualifying and Tournament. Each stage consists of different tasks
+required for robot air hockey. Apart from executing the given tasks the robots needs to be robust and capable of adapting to changes.
+Except from the Warm Up stage the submitted agents are evaluated in modified simulation environments to mimic the sim-to-real gap.
+
+The first three teams are able to deploy their approach on the real robot and compete in a real world scenario.
+
+\subsection{Warm-Up Stage}
+In the Warm-Up stage the participants were given an ideal environment with a 3-degree-of-freedom robot. This stage aimed to familiarize with the given tasks,
+the environment and the application programming interface.
+
+The tasks given at this point were two:
+\begin{itemize}
+    \item \textbf{Hit}: The puck is randomly initialized on the left side of the table. The initial velocity is zero. The objective is to hit the puck
+    to score a goal as fast as possible.
+    \item \textbf{Defend}: The puck is randomly initialized on the right side of the table with a random velocity heading left.
+    The objective is to stop the puck on the right side of the table and prevent it from getting scored.
+\end{itemize}
+\subsection{Qualifying Stage}
+In this stage the participants were given an environment exposing an interface to control a general-purpose robot, the KUKA-iiwa14 LBR.
+At this point the submitted agents to the challenge's cloud evaluator were simulated with a modified version of the environment handed to the participant teams
+in order to simulate different types of real world problems. This modifications included disturbances, observation noise, loss of tracking, model mismatch, and imperfect trakcing controller.
+
+Each team could evaluate its solution once per task per day. Each evaluation was conducted with 1000 episodes, equivalently 2.8 hours of real-world experiments.
+Based on the evaluation metric, the agents were categorized into three levels:
+\begin{itemize}
+    \item Deployable
+    \item Improvable
+    \item Nondeployable.
+\end{itemize}
+
+The given tasks at this stage were three:
+
+\begin{itemize}
+    \item \textbf{Hit}: The opponent moves in a predictable pattern. The puck is randomly initialized with a small velocity. The objective is to score the goal as many times as possible.
+    The episode ends when the puck is scored or it bounces back. The episodes terminates with \textit{success} if the puck is scored.
+    \item \textbf{Defend}: The puck is randomly initialized on the right side of the table with a random velocity heading left.
+    The objective is to stop the puck on the right side of the table and prevent it from getting scored.
+    The episode terminates if the puck is returned to the opponent's side or scored or the puck speed dropbs below the threshold.
+    The episode terminates with \textit{success} if the puck is in the range where hits can be made and the longitudinal speed is below the threshold.
+    \item \textbf{Prepare}: The puck is initialized close to the table's boundary and is unsuitable for hitting. The task is to control the puck to move it into a good hit position. The puck is not allowed to cross the middle line.
+    The episodes terminates if the puck crosses the middle line that connects the middle points of two goals, or the puck is on the opponent's side of the table.
+    The episodes terminates with success if the puck is in the range where its can be made and the longitudinal speed is below the threshold.
+\end{itemize}
+
+\subsection{Tournament Stage}
+Only the participant teams who submitted agents that were categorized as Deployable or Improvable were qualified to participate in the tournament stage.
+The maximum number of teams is 16, which were determined based on the ranking of \textit{success rate} in the qualifying stage.
+In this stage each team had to develop an agent able to play the whole game.
+A hard coded baseline agent was provided to test and validate the agents before the actual competition started. 
+
+The tournament stage was divided into two rounds. After the first rounds teams had two weeks to adjust and improve their agent.
+Teams were awarded three points if they won a match, otherwise one point if they drew and zero if they lost.
+The final ranking of the tournament was determined by the total score of the two rounds.
+
+\subsubsection{Game Rules}
+\begin{itemize}
+    \item A game is 15 minutes in length, i.e. 45000 steps.
+    \item The first player to accumulate seven (7) points wins the game. If no player accumulates seven points within the designated competition time, the player with the most points wins.
+    \item To score a point, the puck must fully enter the goal. Rebounds or pucks that get stuck halfway in do not count as a point.
+    \item When a player makes a goal, the other player serves the puck next.
+    \item A player may only strike the puck when it is on their side of the centerline.
+    \item Mallets may not cross the center line when striking the puck.
+    \item When the puck stops in the middle of the table (20cm width), the puck is reset randomly to one player's side
+    \item “Topping” the puck is not allowed. This means players cannot lift their mallet and place it over the puck to hold it in place.
+    \item Touching the puck with other parts of the robot is not allowed.
+    \item Once the puck is on a certain player's side of the center line, the player has 15 seconds, i.e. 750 steps, to hit the puck back across the center line. Otherwise a foul is committed and the opponent receives possession of the puck.
+\end{itemize}
