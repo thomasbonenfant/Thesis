@@ -1,6 +1,34 @@
 \chapter*{Introduction}
 \label{ch:Introduction}
+% Sequential decision making is a process where an agent makes a series of decisions over time, each influencing future states and decisions. 
+% This process involves dynamically selecting actions based on current and past information to achieve a long-term objective.
+% Several techniques exist to find an agent that achieves this long term objective: the techniques employed to find an agent
+% able to achieve this objective usually depends on our knowledge of the environment: perfect knowledge enable us to find an exact
+% solution directly, although very expensive to compute, or iteratively, using the dynamic programming framework. 
+% Generally however, a perfect model of the environment the agent is taking decision in is not known, and therefore we engage the problem
+% using the reinforcement learning framework. Reinforcement learning enables an agent to learn from trial and error interacting
+% with the environment that outputs its state and a reward. Applying this trial and error in some applications can become problematic:
+% robotic control in real-world with this approach can lead to safety issues and unwanted damages to the robotic system and its environment.
+% This is why in some cases reinforcement learning is first applied during a simulation of the environment and next deployed on a real world
+% system. This transfer however suffers from performance drops and still safety and damage issues as the model of the environment
+% does not take into account real-world problems. This gap between simulation and real world is called reality gap.
 
+Sequential decision making involves making a series of decisions over time, with each decision influencing future states and subsequent decisions. 
+Actions are dynamically selected based on current and past information to achieve a long-term objective. 
+Several techniques are available to achieve this long-term objective, and the choice of technique typically depends on the level of 
+knowledge about the environment.
+
+When perfect knowledge of the environment is available, a solutions can be found via dynamic programming or linear programming techniques. 
+However, in most cases, a perfect model of the environment is not available, necessitating the use of the reinforcement learning framework.
+
+Reinforcement learning enables learning from trial and error by interacting with the environment, 
+which provides states and rewards. However, applying this trial-and-error approach can be problematic in some applications. 
+For example, in real-world robotic control, this approach can lead to safety issues and unwanted damage to the robotic system and its environment. 
+Therefore, reinforcement learning is often first applied in a simulated environment before being deployed in the real world.
+
+This transfer from simulation to the real world often suffers from performance drops and still presents safety and damage issues because the simulation 
+model may not be accurate or may not account for noise and other real-world problems. 
+This discrepancy between simulation and the real world is known as the reality gap.
 \section*{Motivation}
 
 Closing the reality gap is a crucial research direction in achieving true embodied intelligence. 
@@ -57,4 +85,6 @@ The thesis is structured as follows:
     This chapter details the design and implementation of the agents used during the competition, including the hierarchical approach and reinforcement learning techniques applied.
     \item \textbf{Experimental Results}:
     This chapter presents the results obtained during the competition and discusses the improvements made post-competition.
-\end{ernumerate}
+    \item \textbf{Conclusions and future developments}
+
+\end{enumerate}

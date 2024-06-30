@@ -4,7 +4,8 @@ In this chapter we review the main challenges in the application of reinforcemen
 field of robotics and what are the state of the art algorithms and techniques. 
 Next, hierarchical reinforcement learning is introduced and a brief overview of the different frameworks is presented.
 
-\section{Robotics}
+\section{Controller for the Air Hockey task}
+\label{sec:baseline}
 Traditional methods in robotics require expert knowledge and very accurate models of the controlled robot in order to achieve a given task.
 Usually, the desired behavior of the robot is specified using some planned trajectories with a given structure, e.g. cubic splines, that are then optimized
 using some criterion. For example, the objective function could include the path smoothness, distance to obstacles, time, path lengths and the robot constraints.
@@ -86,7 +87,7 @@ functional robotic systems. Reinforcement Learning in Robotics has however many 
 
 \subsubsection{Curse of Dimensionality}
 Robotics systems often have to deal with high dimensional state and action spaces due to the many degrees of freedom (DoFs) of modern
-anthropomorfic robots. For example, in the ball-paddling task shown in Figure \ref{fig:ball_paddling_robot}, where a robotic arm need to maintain the ball bouncing on a racket, a proper representation
+anthropomorfic robots. For example, in the ball-paddling task shown in Figure \ref{fig:ball_paddling_robot}, where a robotic arm needs to maintain the ball bouncing on a racket, a proper representation
 of s robot's state would consist of its joint angles and velocities for each of its seven DoFs as well as the cartesian position
 and velocity of the ball. The robot's actions would be the generated motor commands, which often are torques or accelerations.
 %In this example, we have $2\times\left(7 + 3\right)=20$ state dimensions and 7-dimensional continuous actions.
@@ -104,30 +105,30 @@ and the effectiveness of learning algorithms.
 This problem is solved with function approximators like neural networks using Deep Reinforcement Learning algorithms.
 
 \subsubsection{Curse of real-world samples}
+Robots interact with the physical world, hence robot reinforcement learning suffers from most of the resulting real-world problems:
+\begin{itemize}
 %usura robot
-Robots interact with the physical world, hence robot reinforcement learning suffers from most of the resulting real-world problems.
-For example, robot hardware is usually expensive, suffers from wear and tear, and requires careful maintenance. This is why safe exploration
+\item \textbf{Wear and tear}:
+Robot hardware is usually expensive, suffers from wear and tear, and requires careful maintenance. This is why safe exploration
 becomes a key issue in the learning process.
 
+\item \textbf{Reproducibility}:
 Several more aspects of the real-world make robotics a challenging domain. Frequently, the environment settings during an earlier 
 learning period cannot be reproduced. This problem makes comparing algorithms particularly hard. Furthermore, the approaches often have to deal 
 with uncertainty due to inherent measurement noise and the inability to observe all states directly with sensors.
 
-%human supervision
+\item \textbf{Human supervision}:
 Most real robot learning tasks require some form of human supervision, e.g. putting the pole back on the robot's end-effector during pole balancing
  after a failure. Even when an automatic reset exists, the learning speed becomes essential as a task on a real robot cannot be sped up.
 In some tasks such as a slowly rolling robot, the dynamics can be ignored; in others such as a flying robot, they cannot. In particular in the latter case,
 often the whole episode needs to be completed as it is not possible to start from arbitrary states.
 
-For such reasons, real-world samples are expensive in terms of time, labor and, potentially, finances. In robotic reinforcement learning,
-it is often considered to be more important to limit the real-world interaction time instead of limiting memory consumption or computational complexity.
-Thus, sample efficient algorithms that are able to learn from a small number of trials are essential.
-
+\item \textbf{Real-Time constraints}:
 Since the robot is a physical system, there are strict constraints on the interaction between the learning algorithm
 and the robot setup. For dynamic tasks, the movement cannot be paused and actions must be selected within a time-budget without 
 the opportunity to pause to think, learn or plan between actions.
 
-%discretization and delays
+\item \textbf{Discretization and delay}:
 As reinforcement learning algorithms are inherently implemented on a digital computer, the discretization of
 time is unavoidable despite the inherently continuous time configuration of physical systems. Time-discretization of the
 actuation can generate undesirable artifacts. As most robots are controlled at fixed sampling frequencies (in the range between
@@ -144,8 +145,12 @@ actions into the state. However, this significantly increases the dimensionality
 The problems related to time budgets and delays can also be avoided by increasing the duration of the time steps.
 One downside of this approach is that the robot cannot be controlled as precisely.% another issue is that it may complicate a
 %description of system dynamics.
+\end{itemize}
 
-%simulation
+For such reasons, real-world samples are expensive in terms of time, labor and, potentially, finances. In robotic reinforcement learning,
+it is often considered to be more important to limit the real-world interaction time instead of limiting memory consumption or computational complexity.
+Thus, sample efficient algorithms that are able to learn from a small number of trials are essential.
+
 \subsubsection{Curse of under-modeling and model uncertainty}
 One way to offset the cost of real-world interaction is to use accurate models as simulators. In an ideal setting, this
 approach would make it possible to learn the optimal policy within the emulated environment and subsequently transfer it to the real robot.

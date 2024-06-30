@@ -2,20 +2,21 @@
 \label{sec:sac_agent}
 
 SAC \cite{SAC}, described in \ref{sec:SAC} was used to implement different agents during the Robot air hockey competition.
-As illustrated in Figure \ref{fig:sac_agent} the agent was composed of two components: the policy's neural network and the ATACOM transformation, described in \ref{sec:atacom}.
+As illustrated in Figure \ref{fig:sac_agent} the agent was composed of two components: the policy's neural network and the ATACOM transformation, described in section \ref{sec:atacom}.
 
 \textbf{Neural Network}:
-The trained neural network is a two layer feed forward neural network with 256 neurons per hidden layer and an output layer with 2 neurons. 
+The trained neural network is a two layer feed forward neural network with 256 neurons per hidden layer and an output layer with $2 \times n$ neurons 
+where $n$ is the number of controlled joint accelerations. 
 The input layer depends on the state space of the task's environment. The nonlinearity of the neural network comes from the
 rectified linear unit (ReLU) activation function.
 
-To achieve exploration with a continuous action space the two outputs of the neural network are used as mean and standard deviation of a gaussian distribution as seen in \eqref{eq:continuous_action}.
+To achieve exploration with a continuous action space the outputs of the neural network are used as mean and standard deviation of a gaussian distribution as seen in \eqref{eq:continuous_action}.
 Finally a $tanh$ transformation is applied to the action sampled from the gaussian distribution. This is done to ensure that the action is bounded between -1 and 1.
 The final action is interpreted as the desired joint accelerations $\ddot{q}$.
 
 \textbf{ATACOM Transformation}:
 This component receives as inputs the desired joint accelerations $\ddot{q}$ computed from the preceding component and outputs joint positions and velocities $[q\,\dot{q}]$ 
-that don't break constraints using the ATACOM algorithm \cite{ATACOM} described in section \ref{sec:atacom}. However ATACOM resulted unable to adhere to the constraints on the joint velocity.
+that don't break constraints using the ATACOM algorithm \cite{Atacom} described in section \ref{sec:atacom}. However, ATACOM was unable to adhere to the constraints on the joint velocity.
 This is why we also limited the maximum joint accelerations between -1 and 1.
 
 \begin{figure}[H]
@@ -25,7 +26,7 @@ This is why we also limited the maximum joint accelerations between -1 and 1.
     \label{fig:sac_agent}
 \end{figure}
 
-The SAC Agent was used for the \textit{defend}, \textit{counter-attack} and \textit{home} tasks defined in \label{subseq:reward} with their reward functions.
+The SAC Agent was used for the \textit{defend}, \textit{counter-attack} and \textit{home} tasks defined in section \label{subsec:reward} with their reward functions.
 
 \subsubsection{Defend and Counter-attack tasks}
 For the \textit{defend} and \textit{counter-attack} task a curriculum learning (CL) \cite{CL} approach was used to gradually increase the difficulty of the task and facilitate training.

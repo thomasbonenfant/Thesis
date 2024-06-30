@@ -56,41 +56,33 @@ to find a configuration of the robot that places the end-effector in the wanted 
 where $\bar{q}_t$ is the desired joint configuration computed using inverse kynematics from the desired end-effector's potision $p_{ee,t}$ at time $t$ and
 $\dot{\bar{q}}_t$ is the desired joint velocity computed using finite differences.
 
-The computed joint velocities were next optimized using a \textit{Quadratic Programming} (QP) optimizer that takes into account the joint velocity limits.
+The computed joint velocities were next optimized using \textit{weighted null space optimization}, defined in \ref{sec:baseline}, that takes into account the joint velocity limits.
 
 \textit{Joint space control}:
 The agent directly controls the joint accelerations $\ddot{q}$. This control variable is then converted to joint position and velocities using ATACOM \cite{Atacom} and submitted as a reference variable
-to the underlying controller. The ATACOM transformation produces a command [joint\_positions, joint\_velocities] that reduces greatly the number of violated constraints a part from the joint velocity constraint.
+to the underlying controller. The ATACOM transformation produces a command [joint\_positions, joint\_velocities] that reduces greatly the number of violated constraints excluding the joint velocity constraint.
 Reducing the joint acceleration limits solved the joint velocity constraints problem. The action space too was scaled between -1 and 1.
-
 
 \subsection{Reward function}
 \label{subseq:reward}
 The designed reward is task-dependent, given that a policy is trained for each task. It is also shaped as the success reward of each task is very sparse.
 Generally the reward function introduces a penalty for each violated constraint proportional to its penalty points:
 
-\begin{equation*}
+\begin{equation}
     r(s,a) = r_t(s,a) + r_c(s,a),
-\end{equation*}
+\end{equation}
 
 where $r_t(s,a)$ is the task-dependent reward and $r_c(s,a)$ is the penalty for violating the constraints.
+
 
 Additional tasks other than the ones specified in \ref{sec:organization} were designed for learning behaviors useful for a complete game. A \textit{return home} task in which the robot needs to achieve a certain configuration and remain still,
 and a \textit{counter-attack} similar to the \textit{defend} task but gives the robot the possibility to score a goal while defending from the incoming puck.
 
 The reward function $r_t(s,a)$ for each task is now described:
 
-\textbf{Return home}: At each step of the training process, the agent incurs a penalty based on the distance to the \textit{home configuration}
-\begin{equation*}
-    r = - \Vert q - q_{home} \Vert
-\end{equation*}
-
-where $q_{home}$ is the initial position of the robot before a game starts or after a reset. For this task, the robot was initialized to a configuration
-drawn from the distribution of terminal states of the other tasks.
-
 \textbf{Defend and counter-attack}: 
 Two agents for the defend and counter-attack tasks. In these
-tasks the episode starts with the puck moving towards our goal. In the both cases, the agent receives a
+tasks the episode starts with the puck moving towards our goal. In both cases, the agent receives a
 high penalty (-100) when the puck breaches our goal. When the agent successfully interacts with the
 puck, a reward (+10) is granted, coupled with reward proportional to the norm of the puck's velocity,
 with a negative sign while defending and positive sign while counter-attacking. This incentivizes the
@@ -102,11 +94,13 @@ score in the opponent's goal, for which he receiver an additional large bonus of
     r = \left\{
         \begin{aligned}
             1000 \quad &if \text{ scored} \\
-            10  \quad &if \text{ interacted with puck} \\
+            10 + A \cdot \Vert \dot{p}_{puck} \Vert \quad &if \text{ interacted with puck} \\
             -100 \quad &if \text{ opponent scored a goal}
         \end{aligned}
     \right.
 \end{equation*}
+
+where $A$ is a constant term with positive sign in the counter-attac task, negative in the defend task.
 
 \textbf{Hit}:
 The reward function of the hit task is based on the construction of a triangle with the opponent's area and the puck as vertices (Figure \ref{fig:triangle_reward}).
@@ -157,6 +151,14 @@ where angle\_border is the angle between the puck velocity vector and the closes
 \textbf{Prepare}:
 The reward function for the prepare task is a sparse reward given at the last step with a high reward (1000) if the task is successful, otherwise -100.
 
+\textbf{Return home}: At each step of the training process, the agent incurs a penalty based on the distance to the \textit{home configuration}
+\begin{equation*}
+    r = - \Vert q - q_{home} \Vert
+\end{equation*}
+
+where $q_{home}$ is the initial position of the robot before a game starts or after a reset. For this task, the robot was initialized to a configuration
+drawn from the distribution of terminal states of the other tasks.
+This distribution is necessary for creating experiments with different initial positions, ensuring that the agent can learn to reach $q_{home}$ independently of its starting position.
 
 
 

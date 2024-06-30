@@ -32,14 +32,28 @@ This competition was organized to \textit{close the sim-to-real gap}, i.e., the 
 when transferring a robotic system trained in a simulated environment to the real world.
 In fact, when transferring the robotic system to the real world we have to deal with
 \begin{itemize}
-    \item disturbances
-    \item observation noise
-    \item safety
-    \item model mismatch
-    \item delays
-    \item actuator limitations
-    \item physical feasibility
-    \item limited real-world interaction
+    \item \textbf{Disturbances}:
+    Real-world environments are subject to various unpredictable disturbances, such as vibrations, 
+    temperature variations, and other environmental factors that can affect the performance of the robotic system.
+    \item \textbf{Observation noise}:
+    Sensors used in real-world applications often introduce noise into the observed data, 
+    which can lead to inaccuracies in the robot's perception of its environment and subsequent decision-making processes.
+    \item \textbf{Safety}:
+    Ensuring the safety of both the robotic system and its surroundings, including humans and other objects, is paramount. 
+    The robot must operate within safe parameters to avoid causing harm or damage.
+    \item \textbf{Model mismatch}:
+    The physical properties and dynamics of real-world systems often differ from their simulated counterparts. 
+    This mismatch can lead to discrepancies in performance and behavior when the robot is deployed outside the controlled environment of a simulation.
+    \item \textbf{Delays}:
+    Communication and processing delays can occur in real-world systems, affecting the timing and execution of the robot's actions. 
+    These delays need to be accounted for to ensure smooth and accurate operation.
+    \item \textbf{Actuator limitations}:
+    The actuators used to control the robot have physical limitations in terms of speed, precision, and strength. 
+    These constraints must be considered when designing control strategies and algorithms.
+    % \item \textbf{Physical feasibility}
+    \item \textbf{Limited real-world interaction}:
+    In the real world, opportunities for interaction and experimentation are often limited due to cost, time, and safety concerns. 
+    This restriction makes it challenging to gather sufficient data for training and refining the robotic system.
 \end{itemize}
 
 The Robot Air Hockey Challenge provides a platform for researchers in the field of robot learning to interact with each

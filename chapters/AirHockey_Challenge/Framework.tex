@@ -20,6 +20,8 @@ Participants had to implement the \textit{Agent} component.
     \begin{equation*}
         \tau_{cmd} = M(q)\ddot{q}_d + c(q,\dot{q}) + g(q) + K_p(q_d - q) + K_d(\dot{q}_d - \dot{q})
     \end{equation*}
+    where $M(q)\ddot{q}$ is the intertia matrix, $c(q,\dot{q})$ represents the Coriolis and centrifugal forces and $g(q)$ represents the gravitational forces acting on the robot.
+    Finally, $K_p$ is the proportional gain matrix and $K_d$ is the derivative gain matrix. 
 
     The \textit{Trajectory interpolator}, by default a cubic polynomial, is used to interpolate the trajectory points between two consecutive commands.
     A \textit{Joint safety limiter} is used to avoid executing commands that exceed the position or velocity limits.
@@ -59,7 +61,7 @@ Participants had to implement the \textit{Agent} component.
     \subsubsection{Planar robot - 3 degrees of freedom}
     During the Warm up stage the participants were provided a 3 DoF planar robot to understand how to use the framework.
     The robot is set such that the end-effector remains at the same height of the table surface. In simulation, the collision between the robot and the table are discarded.
-    The base of the planar robot is located at [-1.51, 0., -0.1], the orientation is aligned with the world's frame, as illustrated in Figure \ref{fig:planar_env}
+    The base of the planar robot is located at [-1.51, 0.0, -0.1], the orientation is aligned with the world's frame, as illustrated in Figure \ref{fig:planar_env}
 
 
     Below the specification of the planar robot:
@@ -120,7 +122,7 @@ These constraints are described here:
 \subsection{Evaluation Metrics}
     \begin{itemize}
         \item \textbf{Success Rate}:
-        A success criterion is defined for each task. We will check if the task succeed when the episode terminates. Each episode can terminate because of two reasons: 1. maximum number of steps reached; 2. No further interaction can be in the episodes.
+        A success criterion is defined for each task. We will check if the task succeed when the episode terminates. Each episode can terminate because of two reasons: maximum number of steps reached; no further interaction can be in the episodes.
         \begin{itemize}
             \item Hit: The puck enters the scoring zone with a speed above the threshold.
             \item Defend: The final velocity of the puck (at the end of the game) is below the threshold and does not bounce to the other side of the court.

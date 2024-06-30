@@ -2,7 +2,7 @@
 \label{sec:hierarchical_agent}
 For the tournament stage of the competition, an agent capable of playing entire matches is needed.
 Having previously implemented different agents for each task we can play an entire match alternating between these specific agents.
-The difficulty now is to define how to switch between these subpolicies being competitive against an opponent.
+The difficulty now is to define how to switch between these subpolicies while being competitive against an opponent.
 
 To do so, a high-level agent has been developed. 
 This agent decides what policy to execute, based on the observation of the environment and on two main components: the Switcher and the Finite State Machine.
@@ -13,6 +13,45 @@ The selected policy could potentially be the previous one. This can happen, for 
 puck is still in an unsuitable position for hitting, a second prepare might be necessary.
 
 The switcher's rules relies on some parameters, therefore it could be trained formulating an optimization problem to find an optimal set of parameters.
+To do this we can use PGPE \cite{PGPE}.
+
+Policy Gradients with Parameter-Based Exploration (PGPE) is a reinforcement learning algorithm that enhances exploration by directly perturbing 
+the parameters of the policy. Instead of adding noise to the actions at each step, PGPE samples the policy parameters from a distribution, 
+leading to a deterministic execution of the policy based on these sampled parameters.
+This method is particularly advantageous for optimizing non-differentiable policies, such as the switcher implemented in this work.
+Using PGPE, a gaussian distribution $\rho$ over the switcher's parameters $\theta$. 
+The algorithm updates the mean $\mu$ and standard deviation $\sigma$ of $\rho$, allowing effective exploration and optimization.
+
+For further details refer to \cite{PGPE}.
+
+
+% \subsection{Policy gradients with parameter-based exploration}
+% PGPE is a policy gradient algorithm that achieves exploration directly perturbing the parameters of the policy. In this formulation, a sample $\theta$ is drawn
+% from the parameters distribution $\rho$, and the policy then proceeds deterministically.
+
+% We can formulate an optimization problem defining the performance index
+
+% \begin{equation}
+%     \label{eq:pgpe_index}
+%     J(\rho) = \int_\Theta \int_H p(h,\theta|\rho)r(h)dh\,d\theta,
+% \end{equation}
+% where $\theta \in \Theta$ is a parameter vector, $h = [s_{1:T},a_{1:T}] \in H$ is a trajectory, $r(h)=\sum_{t=1}^T r_t$ is the cumulative reward and $rho$ is
+% a probability distribution over the parameters $\theta$.
+
+% Differentiating equation \eqref{eq:pgpe_index} we obtain
+% \begin{equation}
+%     \nabla_\rho J(\rho) = \int_\Theta \int_H p p(h|\theta) p(\theta | \rho) \nabla_\rho \log \p(\theta|\rho) r(h) dh\,d\theta.
+% \end{equation}.
+
+% Sampling $\theta$ from $p(\theta|\rho)$ and then running the agent to generate $h$ from $p(h|\theta)$ yields the following gradient estimator:
+
+% \begin{equation}
+%     \nabla_\rho J(\rho) \sim \frac{1}{N} \sum_{n=1}^N \nabla_\rho \log p(\theta|rho) r(h^n).
+% \end{equation}
+
+% Assuming that 
+
+
 
 % A Switcher based on some well defined rules was designed for switching between subpolicies.
 % Specifically, the switcher selects the supoliciy and draws an action from it until a terminating condition is met, 
