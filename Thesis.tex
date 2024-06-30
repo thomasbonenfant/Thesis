@@ -97,10 +97,11 @@
 %	ADD YOUR PACKAGES (be careful of package interaction)
 %----------------------------------------------------------------------------
 \usepackage{bbm}
+\usepackage{pgfplots}
 %----------------------------------------------------------------------------
 %	ADD YOUR DEFINITIONS AND COMMANDS (be careful of existing commands)
 %----------------------------------------------------------------------------
-\newtheorem{definition}{Definition}
+\newtheorem{definition}{Definition}[section]
 \newcommand{\mc}[1]{\mathcal{#1}}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -109,7 +110,7 @@
 %----------------------------------------------------------------------------
 %	BEGIN OF YOUR DOCUMENT
 %----------------------------------------------------------------------------
-% \includeonly{chapters/AirHockey_Challenge}
+% \includeonly{chapters/Experiments} %% INCLUDE ONLY!!!
 \begin{document}
 
 \fancypagestyle{plain}{%
@@ -132,7 +133,7 @@
 \include{chapters/Related_Works}
 \include{chapters/AirHockey_Challenge}
 \include{chapters/Methodology}
-% \include{chapters/ChapterOne}
+\include{chapters/Experiments}
 \include{chapters/Conclusion}
 
 % \include{Bibliography}
@@ -144,9 +145,9 @@
 \bibliography{Thesis_bibliography} % The references information are stored in the file named "Thesis_bibliography.bib"
 
 
-\include{Appendix}
+% \include{Appendix}
 
-\include{other}
+% \include{other}
 
 
 \end{document}

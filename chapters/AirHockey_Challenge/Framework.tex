@@ -61,20 +61,13 @@ Participants had to implement the \textit{Agent} component.
     The robot is set such that the end-effector remains at the same height of the table surface. In simulation, the collision between the robot and the table are discarded.
     The base of the planar robot is located at [-1.51, 0., -0.1], the orientation is aligned with the world's frame, as illustrated in Figure \ref{fig:planar_env}
 
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.8\textwidth]{Images/3dof_planar_env.png}
-        \caption{Planar robot base frame.}
-        \label{fig:planar_env}
-    \end{figure}
-
 
     Below the specification of the planar robot:
     \begin{itemize}
         \item \textbf{Position upper limit (rad)}: [ 2.967060, 1.8, 2.094395]
         \item \textbf{Position lower limit (rad)}: [-2.967060, -1.8, -2.094395]
         \item \textbf{Velocity limit (rad/s)}: +/- [1.570796, 1.570796, 2.094395]
-        \item \textbf{Link length (m)}: [0.55, 0.44, 0.44]
+        % \item \textbf{Link length (m)}: [0.55, 0.44, 0.44]
         \item \textbf{Initial position (rad)}: [-1.156, 1.300, 1.443]
         \item \textbf{Initial velocity (rad/s)} [0, 0, 0]
     \end{itemize}
@@ -86,14 +79,17 @@ Participants had to implement the \textit{Agent} component.
 
     We define the End-Effector as the tip of the extension rod before the universal joint. 
     The end-effector's position can be fully determined by the robot's joint position and forward kinematics. 
-    The base position of the robot is depicted in Figure \ref{fig:kuka_env}
+    The base position of the robot is depicted in Figure \ref{fig:kuka_env}.
 
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.8\textwidth]{Images/kuka_env.png}
-        \caption{KUKA robot base frame.}
-        \label{fig:kuka_env}
-    \end{figure}
+    Below the specification of the planar robot:
+    \begin{itemize}
+        \item \textbf{Position upper limit (rad)}: [ 2.967, 2.09 , 2.967, 2.094, 2.967, 2.094, 3.054]
+        \item \textbf{Position lower limit (rad)}: [-2.967, -2.094, -2.967, -2.094, -2.967, -2.094, -3.054]
+        \item \textbf{Velocity limit (rad/s)}: +/- [ 1.483, 1.483, 1.745, 1.308, 2.268, 2.356, 2.356]   
+        \item \textbf{Initial position (rad)}: [ 0, -0.1960, 0, -1.8436, 0, 0.9704 0]
+        \item \textbf{Initial velocity (rad/s)} [0, 0, 0, 0, 0, 0, 0]
+    \end{itemize}
+
 
 \subsection{Constraints}
 To avoid losing points the robot must respect a set of constraints.

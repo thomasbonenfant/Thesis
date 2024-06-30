@@ -1,4 +1,17 @@
 \chapter{Conclusions and future developments}
 \label{ch:conclusions}%
-A final chapter containing the main conclusions of your research/study
-and possible future developments of your work have to be inserted in this chapter.
+In this work, reinforcement learning was successfully applied to the air hockey task using a general-purpose manipulator. 
+The agent was able to play entire matches without violating too many constraints, thanks to the ATACOM algorithm. 
+The SAC method outperformed the rule-based controller for the hitting task, achieving a higher success rate. 
+The rule-based switcher effectively selected the appropriate policy at the right time, with its parameters slightly optimized PGPE.
+
+\section{Future works}
+The developed rule-based switcher currently uses a few simple parametric rules. 
+Future work could involve implementing a more complex switcher with additional rules that also take the opponent's actions into account.
+
+An other strategy could be to apply an end-to-end hierarchical reinforcement learning approach, such as HIRO \cite{HIRO}, where a single low-level policy receives from the high-level
+policy a vector to determine the desired behavior.
+
+Since air hockey is a multi-agent setting, investigating a self-play learning strategy could also be beneficial. 
+This approach could help the agent improve by continuously adapting to and learning from interactions with itself or other agents.
+

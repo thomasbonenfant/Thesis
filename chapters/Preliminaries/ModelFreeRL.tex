@@ -208,9 +208,10 @@ where $\mu: \mc{S} \times \Theta \to \mathbb{R}$ is the mean function and $\sigm
 $\Theta$ is the parameter space of the policy.
 
 A sample from a gaussian policy can be computed as follows:
-\begin{equation*}
+\begin{equation}
+    \label{eq:continuous_action}
     a = \mu(s, \theta) + \sigma(s, \theta) \eta
-\end{equation*}
+\end{equation}
 
 drawing $\eta$ from a standard distribution $\mc{N}(0,1)$.
 

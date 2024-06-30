@@ -2,25 +2,97 @@
 \label{ch:related_works}
 In this chapter we review the main challenges in the application of reinforcement learning in the
 field of robotics and what are the state of the art algorithms and techniques. 
-The information about the challenges encountered applying reinforcement is derived from \cite{Kober2013}.
 Next, hierarchical reinforcement learning is introduced and a brief overview of the different frameworks is presented.
+
+\section{Robotics}
+Traditional methods in robotics require expert knowledge and very accurate models of the controlled robot in order to achieve a given task.
+Usually, the desired behavior of the robot is specified using some planned trajectories with a given structure, e.g. cubic splines, that are then optimized
+using some criterion. For example, the objective function could include the path smoothness, distance to obstacles, time, path lengths and the robot constraints.
+
+An example of these techniques is given by \cite{baseline}, where the authors implemented an algorithm for the Air Hockey hit task described in \ref{subsec:qualifying_stage} using a general purpose robot with 7 DoFs.
+The end-effector's trajectory for hitting the puck is planned avoiding collisions and then optimized with multiple optimization problems in order to achieve high
+performance while adhering to the constraints :
+
+\textbf{Weighted Null Space Optimization}:
+To achieve high speed trajectories, the null space velocity is optimized at every point of the trajectory. Considering only the position of the end-effector in task space,
+the concerned Jacobian is $J_p \in \mathbb{R}^{3\times n}$, where $n$ is the number of joints. Let $b = J^\dag_p\left(\frac{\bar{x} - x}{\Delta T} + \bar{v}\right)$
+be the joint velocities for the trajectory tracking with $J_p^\dag = J^\intercal\left(J J^\intercal\right)^{-1}$ being the general pseudoinverse of $J_p$, $x$, $\bar{x}$, $\bar{v}$ are respectively actual, desired cartesian position and desired cartesian velocity.
+The objective is to maximize the weighted joint velocity as
+
+\begin{equation*}
+    \begin{aligned}
+        \min_\alpha  \quad&\frac{1}{2} \Vert b + E_N \alpha \Vert^{2}_W \\
+        \text{s.t.}  \quad&\dot{q}^{\min} \le b + E_N \alpha \le \dot{q}^{\max}
+    \end{aligned}
+\end{equation*}
+
+where $E_N \in \mathbb{R}^{n\times \left(n - 3\right)}$ is the \textit{null space matrix}. Each column of the \textit{null space matrix} is one basis vector of
+$Null(J_p)$ and $\alpha \in \mathbb{R}^{n-3}$ are entries on each basis vector. It should be pointed out that, when $W$ is set to be an identity matrix, the optimal solution
+is $\alpha = 0$ when the constraints are not violated. In practice higher weights are applied on joints that afford more loads and have lower velocity limits.
+The next step and velocity are obtained by Euler integration
+
+\begin{equation*}
+    \begin{aligned}
+        &\dot{q}_{next} = b + E_N \alpha^* \\
+        &q_{next} = q_{current} + \dot{q}_{next} \Delta T
+    \end{aligned}
+\end{equation*}
+
+\textbf{Hitting Configuration Optimization}:
+To find the best configuration for the hitting movement, the manipulability along a specific hitting direction $v$ is considered, as presented in \cite{manipulability}.
+The following quantity at the hitting point $p$ is maximized
+
+\begin{equation*}
+    \begin{aligned}
+        \max_q \quad& \Vert \left(v^\intercal J_p(q) \right) \Vert_2, \\
+        \text{s.t.} \quad& FK_p(q) = p
+    \end{aligned}
+\end{equation*}
+
+where $FK_p(q)$ is the forward kinematic w.r.t the end-effector position.
+
+
+\textbf{Computing the maximum hitting velocity}:
+To compute the maximum hitting velocity at the selected hitting configuration, two strategies can be used:
+\begin{enumerate}
+    \item \textit{Least Square solution}: The hitting speed velocity is parameterized as a scalar $\eta$ and a hitting direction $v$, such that
+        $v_{\max} = \eta v$. The least square solution is $\dot{q} = J_p^\dag(q^*)v_{\max}$. Thus, the maximum possible joint velocity can be determined
+        by the minimum ratio of the absolute value of the \textit{i}-th joint velocity $\dot{q}_i$ and its maximum $\dot{q}^{\max}_i$
+
+        \begin{equation*}
+            \eta = \min_i \left(\frac{\dot{q}^{\max}_i}{|\dot{q}_i|}\right),\quad i \in \{1,\dots,n\}.
+        \end{equation*}
+
+    \item \textit{Linear Programming}:  Instead of using the least squared solution, a linear program on the null space can be constructed as
+
+        \begin{equation*}
+            \begin{aligned}
+                \max_\alpha \quad &v^\intercal J_p(q^*)\left(E_{v^\bot}(q^*)\alpha\right), \\
+                \text{s.t.} \quad & \dot{q}^{\min} \le E_{v^\bot}(q^*)\alpha \le \dot{q}^{\max},
+            \end{aligned}
+        \end{equation*}
+
+        where $v^\bot \in \mathbb{R}^3$ is the orthogonal complement space of $v \in \mathbb{R}^3$, which in this case is a plane orthogonal to the hitting direction,
+        and $E_{v^\bot}(q^*) = Null\left[(v^{\bot})^\intercal J_p(q^*)\right]$ is the basis vectors spanning the null space of $(v^{\bot})^\intercal J_p(q^*)$.
+\end{enumerate}
+
 
 \section{Reinforcement Learning in Robotics}
 Reinforcement Learning enables robots to learn complex behaviors through interaction with the environment and maximizing the cumulative rewards.
 This can be particularly advantageous for tasks that are too intricate or dynamic to be effectively addressed by conventional methods.
 On the other hand traditional robotics techniques, such as classical control theory and model-based approaches, are typically more predictable and easier to implement.
 While these techniques may lack the flexibility and adaptability of reinforcement learning, they offer a more straightforward and less resource-intensive path to deploying
-functional robotic systems. Reinforcement Learning in Robotics has however many challenges to face, and these are described in the next subsection.
+functional robotic systems. Reinforcement Learning in Robotics has however many challenges to face \cite{Kober2013}, and these are described in the following section.
 
 \subsubsection{Curse of Dimensionality}
-Robotics systems often have to deal with high dimensional states and actions due to the many degrees of freedom (DoFs) of modern
-anthropomorfic robots. For example, in the ball-paddling task shown in Figure \ref{fig:ball_paddling_robot}, a proper representation
-of a robot's state would consist of its joint angles and velocities for each of its seven DoFs as well as the cartesian position
+Robotics systems often have to deal with high dimensional state and action spaces due to the many degrees of freedom (DoFs) of modern
+anthropomorfic robots. For example, in the ball-paddling task shown in Figure \ref{fig:ball_paddling_robot}, where a robotic arm need to maintain the ball bouncing on a racket, a proper representation
+of s robot's state would consist of its joint angles and velocities for each of its seven DoFs as well as the cartesian position
 and velocity of the ball. The robot's actions would be the generated motor commands, which often are torques or accelerations.
-In this example, we have $2\times\left(7 + 3\right)=20$ state dimensions and 7-dimensional continuous actions.
+%In this example, we have $2\times\left(7 + 3\right)=20$ state dimensions and 7-dimensional continuous actions.
 
-This high dimensionality presents significant challenges in terms of computational complexity 
-and the efficiency of learning algorithms.
+This curse of dimensionality presents significant challenges in terms of computational complexity 
+and the effectiveness of learning algorithms.
 
 \begin{figure}[H]
     \centering
@@ -32,6 +104,7 @@ and the efficiency of learning algorithms.
 This problem is solved with function approximators like neural networks using Deep Reinforcement Learning algorithms.
 
 \subsubsection{Curse of real-world samples}
+%usura robot
 Robots interact with the physical world, hence robot reinforcement learning suffers from most of the resulting real-world problems.
 For example, robot hardware is usually expensive, suffers from wear and tear, and requires careful maintenance. This is why safe exploration
 becomes a key issue in the learning process.
@@ -40,6 +113,7 @@ Several more aspects of the real-world make robotics a challenging domain. Frequ
 learning period cannot be reproduced. This problem makes comparing algorithms particularly hard. Furthermore, the approaches often have to deal 
 with uncertainty due to inherent measurement noise and the inability to observe all states directly with sensors.
 
+%human supervision
 Most real robot learning tasks require some form of human supervision, e.g. putting the pole back on the robot's end-effector during pole balancing
  after a failure. Even when an automatic reset exists, the learning speed becomes essential as a task on a real robot cannot be sped up.
 In some tasks such as a slowly rolling robot, the dynamics can be ignored; in others such as a flying robot, they cannot. In particular in the latter case,
@@ -53,10 +127,10 @@ Since the robot is a physical system, there are strict constraints on the intera
 and the robot setup. For dynamic tasks, the movement cannot be paused and actions must be selected within a time-budget without 
 the opportunity to pause to think, learn or plan between actions.
 
+%discretization and delays
 As reinforcement learning algorithms are inherently implemented on a digital computer, the discretization of
-time is unavoidable despite that physical systems are inherently continuous time systems. Time-discretization of the
-actuation can generate undesirable artifacts (e.g. the distortion of distance between states) even for idealized physical
-systems, which cannot be avoided. As most robots are controlled at fixed sampling frequencies (in the range between
+time is unavoidable despite the inherently continuous time configuration of physical systems. Time-discretization of the
+actuation can generate undesirable artifacts. As most robots are controlled at fixed sampling frequencies (in the range between
 500 Hz and 3 kHz) determined by the manufacturer of the robot, the upper bound on the rate of temporal discretization
 is usually pre-determined. The lower bound depends on the horizon of the problem, the achievable speed of changes in
 the state, as well as delays in sensing and actuation. All physical systems exhibit such delays in sensing and
@@ -68,49 +142,53 @@ in most general reinforcement learning algorithms, the actions are assumed to ta
 delays would violate the usual Markov assumption. This effect can be addressed by putting some number of recent
 actions into the state. However, this significantly increases the dimensionality of the problem.
 The problems related to time budgets and delays can also be avoided by increasing the duration of the time steps.
-One downside of this approach is that the robot cannot be controlled as precisely; another is that it may complicate a
-description of system dynamics.
+One downside of this approach is that the robot cannot be controlled as precisely.% another issue is that it may complicate a
+%description of system dynamics.
 
+%simulation
 \subsubsection{Curse of under-modeling and model uncertainty}
 One way to offset the cost of real-world interaction is to use accurate models as simulators. In an ideal setting, this
-approach would render it possible to learn the behavior in simulation and subsequently transfer it to the real robot.
+approach would make it possible to learn the optimal policy within the emulated environment and subsequently transfer it to the real robot.
 Unfortunately, creating a sufficiently accurate model of the robot and its environment is challenging and often requires
 very many data samples. As small model errors due to this under-modeling accumulate, the simulated robot can
 quickly diverge from the real-world system.
 
 Fot tasks where the system is self-stabilizing (that is, where the robot does not require active control to remain in a safe state or return to it),
-transferring policies often works well. Nevertheless, tasks can often be learned better in the real world than in simulation due to complex mechanical interactions
-that have proven difficult to model accurately. In contrast, in unstable tasks small variations have drastic consequences. For example, in a pole balancing
-task, the equilibrium of the upright pole is very brittle and constant control is required to stabilize the system. Transferred policies often perform poorly
-in this setting.
+transferring policies often works well. Nevertheless, tasks can often be learned better in the real world than in emulated environments due to complex mechanical interactions
+that have proven difficult to model accurately. In contrast, in unstable tasks small variations have drastic consequences. %For example, in a pole balancing
+%task, the equilibrium of the upright pole is very brittle and constant control is required to stabilize the system. Transferred policies often perform poorly
+%in this setting.
 
 \subsubsection{Curse of goal specification}
 In reinforcement learning, the desired behavior is implicitly specified by the reward function. The goal of reinforcement
-learning algorithms then is to maximize the accumulated long-term reward. While often dramatically simpler than
-specifying the behavior itself, in practice, it can be surprisingly difficult to define a good reward function in robot
-reinforcement learning. The learner must observe variance in the reward signal in order to be able to improve a
-policy: if the same return is always received, there is no way to determine which policy is better or closer to the
-optimum. In many domains, it seems natural to provide rewards only upon task achievement, for example, when a table tennis
+learning algorithms then is to maximize the accumulated long-term reward. %While often dramatically simpler than specifying the behavior itself
+In practice, it can be surprisingly difficult to define a good reward function in robot reinforcement learning. 
+%The learner must observe variance in the reward signal in order to be able to improve a
+%policy: if the same return is always received, there is no way to determine which policy is better or closer to the optimum. 
+In many domains, it seems natural to provide rewards only upon task achievement, for example, when a table tennis
 robot wins a match. This view results in an apparently simple, binary reward specification. However, a robot may
 receive such a reward so rarely that it is unlikely to ever succeed in the lifetime of a real-world system. Instead of
 relying on simpler binary rewards, we frequently need to include intermediate rewards in the scalar reward function
 to guide the learning process to a reasonable solution, a process known as \textit{reward shaping} \cite{Laud2004}.
+This approach can add additional guidance to the agent, helping it learn the desired behavior faster by indicating that certain actions are beneficial.
+However \textit{reward shaping} requires expert knowledge to ensure the rewards accurately reflect progress towards the goal.
 
-\subsubsection{SAC in Robotics}
-SAC \cite{SAC} achieves state of the art performance for robotic tasks in simulation and real-world scenarios as it is able to
-handle continuous state-action spaces and is an off-policy algorithm.
-As described in \cite{SAC_modified}, the authors successfully used SAC to learn policies for a quadrupedal locomotion task and
-a dexterous hand manipulation task in real-world. Being an off-policy algorithm SAC is more sample efficient than other on-policy
-algorithms like PPO \cite{PPO} and this helps mitigating the curse of real-world samples.
+% \subsubsection{SAC in Robotics}
+% SAC \cite{SAC} achieves state of the art performance for robotic tasks in simulation and real-world scenarios as it is able to
+% handle continuous state-action spaces and is an off-policy algorithm.
+% As described in \cite{SAC_modified}, the authors successfully used SAC to learn policies for a quadrupedal locomotion task and
+% a dexterous hand manipulation task in real-world. Being an off-policy algorithm SAC is more sample efficient than other on-policy
+% algorithms like PPO \cite{PPO} and this helps mitigating the curse of real-world samples.
 
 \section{ATACOM}
+\label{sec:atacom}
 One important factor that cannot be neglected in real-world applications is the necessity of satisfying constraints.
 Many practical considerations can be formulated in the form of constraints, such as safety and mechanical viability. For example,
 in the robot manipulation task, the robot should not take actions that damage the environment and cannot take actions that exceed
-its feasible range.
+its feasible range of motion.
 
 In order to achieve safe exploration during learning process in continuous control problems different algorithms have been developed.
-This section describes one of them, called ATACOM \cite{Atacom}.
+This section describes the one that was employed in this thesis, ATACOM \cite{Atacom}
  
 ATACOM transforms a constrained RL problem into a typical unconstrained RL problem. Hence the problem can be addressed by any
 model-free RL algorithm while maintaining the constraints below the tolerance. Furthermore, ATACOM can handle both equality and inequality
@@ -239,15 +317,15 @@ agent triggers the termination condition of the active option.
 \end{figure}
 
 Motion templates \cite{motion_templates} are options that can be parameterized in order to adapt the behavior of its intra-option policy.
-This is often useful in a continuous state-space. A motion template could for example be discovered for throwing a ball, The exhibited
+This is often useful in a continuous state-space. A motion template could for example be discovered for throwing a ball. The exhibited
 force and angle might be parameters of this template. Learning a single policy for each possible combination of force-angle would be infeasible.
 
 \subsubsection{Option-Critic Framework}
 
 The task of learning options can be decoupled from learning the policy-over-options. The agent can focus first on finding useful temporal
-abstractions that simplify the environment. However this approach of bottom-up learning risks wasting time learning sub-behaviors which might not be required
-in order to solve the problem at hand. Formulating options development and discovery as part of an optimization problem tasked with optimizing
-total future reward is an alternative approach which allows options and a policy-over-options to be learned end-to-end.
+abstractions that simplify the environment. However, this approach of bottom-up learning risks wasting time on learning sub-behaviors which might not be required
+in order to solve the problem at hand. Formulating options development and discovery as part of an optimization problem aimed at maximizing the
+total future reward is an alternative approach, which allows options and a policy-over-options to be learned end-to-end.
 
 The Option-Critic architecture (OC) \cite{option-critic} is an end-to-end framework capable of discovering and developing options without
 using prior knowledge. The actor part in the OC framework consists of multiple intra-options policies. The critic part is capable of assessing discounted
@@ -264,14 +342,14 @@ PPOC \cite{PPOC} extends the Option-Critic algorithm for continuous control task
 
 \subsection{Goal-Conditional Framework}
 
-Options are difficult to scale to support numerous sub-behaviors. Training options is inefficient because most commonly only
+Options are difficult to scale to support numerous sub-behaviors. Training options is inefficient because usually only
 one option is trained at the time and no components are shared between them.
 
-Here a different approach is presented, the goal-conditional framework.
+Here a different approach is presented; the goal-conditional framework.
 
-The goal-conditional framework models sub-behaviors differently. In order to support a large amount of sub-behaviors
+The goal-conditional framework models sub-behaviors differently. In order to support a large amount of sub-behaviors,
 a goal-vector $z \in Z$ is utilized to express different sub-behaviors.
-The goal-vector characterizes the desired sub-behavior activated by a higher-level manager to a lower-level worker.
+The goal-vector characterizes the desired sub-behavior activated by a higher level manager to a lower level worker.
 The idea is illustrated in Figure \ref{fig:goal-conditional}. This goal-vector can be discrete in order to express
 a limited number of abstractions, but it is also possible to use a continuous vector to express an infinite number of possible abstractions.
 
@@ -291,11 +369,11 @@ Here are two particular approaches used in the goal-conditional framework:
 \end{itemize}
 
 In the \textbf{General Value Function} \cite{Horde} approach different prediction targets are used besides the extrinsic reward signal.
-Examples of such targets are, learning how many steps there are
-before an episodic control problem terminates, or learning the distance before hitting a wall.
+Examples of such targets are: learning how many steps there are
+before an episodic control problem terminates; learning the distance before hitting a wall.
 Learning different value functions, can be seen as a way to build general knowledge about
 how different aspects of the environment can be manipulated. The intuition behind this
-idea is that if we know how our environment works, we should be able to easier achieve
+idea is that if we know how our environment works, we should be able to achieve
 goals in this environment. Different value functions can essentially be utilized as temporal
 abstractions, allowing the agent to reason on a higher level of abstraction.
 The Horde algorithm \cite{Horde} is capable of learning different targets using independent sub-agents called demons.
@@ -307,7 +385,7 @@ need to collaborate. While the GVF framework focuses on decomposing the reward f
 
 
 Algorithms such as HIRO \cite{HIRO} are capable of learning diverse sets of sub-behaviors and their composition, end-to-end, in function
-of the extrinsic reward. The HIRO architecture, illustrated in Figure \ref{fig:HIRO}.
+of the extrinsic reward. The HIRO architecture is illustrated in Figure \ref{fig:HIRO}.
 In HIRO, the higher level communicates directional subgoals. These subgoals are represented using the state-space and the
 lower level is densely rewarded for moving towards this subgoal-state. Other end-to-end algorithms such as FeUdal Networks \cite{FuN}
 use a low dimensional latent space to represent sub-behaviors.

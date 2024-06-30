@@ -287,3 +287,65 @@ series = {AAMAS '11}
   year={1995},
   publisher={Chapel Hill, NC, USA}
 }
+
+@INPROCEEDINGS{baseline,
+  author={Liu, Puze and Tateo, Davide and Bou-Ammar, Haitham and Peters, Jan},
+  booktitle={2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+  title={Efficient and Reactive Planning for High Speed Robot Air Hockey}, 
+  year={2021},
+  volume={},
+  number={},
+  pages={586-593},
+  keywords={Uncertainty;Service robots;Games;Robot sensing systems;Trajectory;Task analysis;Robots},
+  doi={10.1109/IROS51168.2021.9636263}}
+
+@INPROCEEDINGS{manipulability,
+author={Vahrenkamp, Nikolaus and Asfour, Tamim and Metta, Giorgio and Sandini, Giulio and Dillmann, Rüdiger},
+booktitle={2012 12th IEEE-RAS International Conference on Humanoid Robots (Humanoids 2012)}, 
+title={Manipulability analysis}, 
+year={2012},
+volume={},
+number={},
+pages={568-573},
+keywords={Joints;Jacobian matrices;Manipulators;Indexes;Ellipsoids;Kinematics},
+doi={10.1109/HUMANOIDS.2012.6651576}}
+
+@misc{CL,
+      title={Curriculum Learning for Reinforcement Learning Domains: A Framework and Survey}, 
+      author={Sanmit Narvekar and Bei Peng and Matteo Leonetti and Jivko Sinapov and Matthew E. Taylor and Peter Stone},
+      year={2020},
+      eprint={2003.04960},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2003.04960}, 
+}
+
+@article{PGPE,
+title = {Parameter-exploring policy gradients},
+journal = {Neural Networks},
+volume = {23},
+number = {4},
+pages = {551-559},
+year = {2010},
+note = {The 18th International Conference on Artificial Neural Networks, ICANN 2008},
+issn = {0893-6080},
+doi = {https://doi.org/10.1016/j.neunet.2009.12.004},
+url = {https://www.sciencedirect.com/science/article/pii/S0893608009003220},
+author = {Frank Sehnke and Christian Osendorfer and Thomas Rückstieß and Alex Graves and Jan Peters and Jürgen Schmidhuber},
+keywords = {Policy gradients, Stochastic optimisation, Reinforcement learning, Robotics, Control},
+abstract = {We present a model-free reinforcement learning method for partially observable Markov decision problems. Our method estimates a likelihood gradient by sampling directly in parameter space, which leads to lower variance gradient estimates than obtained by regular policy gradient methods. We show that for several complex control tasks, including robust standing with a humanoid robot, this method outperforms well-known algorithms from the fields of standard policy gradients, finite difference methods and population based heuristics. We also show that the improvement is largest when the parameter samples are drawn symmetrically. Lastly we analyse the importance of the individual components of our method by incrementally incorporating them into the other algorithms, and measuring the gain in performance after each step.}
+}
+
+@article{PGPE_Likmeta,
+title = {Combining reinforcement learning with rule-based controllers for transparent and general decision-making in autonomous driving},
+journal = {Robotics and Autonomous Systems},
+volume = {131},
+pages = {103568},
+year = {2020},
+issn = {0921-8890},
+doi = {https://doi.org/10.1016/j.robot.2020.103568},
+url = {https://www.sciencedirect.com/science/article/pii/S0921889020304085},
+author = {Amarildo Likmeta and Alberto Maria Metelli and Andrea Tirinzoni and Riccardo Giol and Marcello Restelli and Danilo Romano},
+keywords = {Autonomous driving, Decision making, Interpretability, Reinforcement learning, Parameter-based exploration},
+abstract = {The design of high-level decision-making systems is a topical problem in the field of autonomous driving. In this paper, we combine traditional rule-based strategies and reinforcement learning (RL) with the goal of achieving transparency and robustness. On the one hand, the use of handcrafted rule-based controllers allows for transparency, i.e., it is always possible to determine why a given decision was made, but they struggle to scale to complex driving scenarios, in which several objectives need to be considered. On the other hand, black-box RL approaches enable us to deal with more complex scenarios, but they are usually hardly interpretable. In this paper, we combine the best properties of these two worlds by designing parametric rule-based controllers, in which interpretable rules can be provided by domain experts and their parameters are learned via RL. After illustrating how to apply parameter-based RL methods (PGPE) to this setting, we present extensive numerical simulations in the highway and in two urban scenarios: intersection and roundabout. For each scenario, we show the formalization as an RL problem and we discuss the results of our approach in comparison with handcrafted rule-based controllers and black-box RL techniques.}
+}

@@ -1,4 +1,5 @@
 \section{Challenge organization}
+\label{sec:organization}
 The challenge consists in three simulated stages: Warm Up, Qualifying and Tournament. Each stage consists of different tasks
 required for robot air hockey. Apart from executing the given tasks the robots needs to be robust and capable of adapting to changes.
 Except from the Warm Up stage the submitted agents are evaluated in modified simulation environments to mimic the sim-to-real gap.
@@ -17,6 +18,7 @@ The tasks given at this point were two:
     The objective is to stop the puck on the right side of the table and prevent it from getting scored.
 \end{itemize}
 \subsection{Qualifying Stage}
+\label{subsec:qualifying_stage}
 In this stage the participants were given an environment exposing an interface to control a general-purpose robot, the KUKA-iiwa14 LBR.
 At this point the submitted agents to the challenge's cloud evaluator were simulated with a modified version of the environment handed to the participant teams
 in order to simulate different types of real world problems. This modifications included disturbances, observation noise, loss of tracking, model mismatch, and imperfect trakcing controller.
@@ -47,7 +49,7 @@ The given tasks at this stage were three:
 Only the participant teams who submitted agents that were categorized as Deployable or Improvable were qualified to participate in the tournament stage.
 The maximum number of teams is 16, which were determined based on the ranking of \textit{success rate} in the qualifying stage.
 In this stage each team had to develop an agent able to play the whole game.
-A hard coded baseline agent was provided to test and validate the agents before the actual competition started. 
+A hard coded baseline based on the implementation in \cite{baseline} agent was provided to test and validate the agents before the actual competition started. 
 
 The tournament stage was divided into two rounds. After the first rounds teams had two weeks to adjust and improve their agent.
 Teams were awarded three points if they won a match, otherwise one point if they drew and zero if they lost.

@@ -16,7 +16,7 @@ ${\dot{p}}_{ee}$ were computed using the forward kynematics of the robot:
     \end{aligned}
 \end{equation*}
 
-where $q \in \{\}$ fully represents the joint angles of the robot, $FK$ is the forward kynematics function and ${J}$ is the geometric Jacobian matrix of the forward kynematics function. Also the z-axis component of the position and velocity of the end-effector
+where $q = \{q_i | i \in 1, \dots, 7, q^{\min}_i \le q_i \le q^{\max}_i \}$ fully represents the joint angles of the robot, $FK$ is the forward kynematics function and ${J}$ is the geometric Jacobian matrix of the forward kynematics function. Also the z-axis component of the position and velocity of the end-effector
 were discarded. The resulting state space is given by
         
 \begin{equation*}
@@ -35,10 +35,11 @@ Finally, the state space was scaled between -1 and 1:
 
 where $s_{low} \le s \,\forall s$ and $s_{high} \ge s\,\forall s$.
 
-Because of the noise added to the environment during the evaluation a Kalman Filter \cite{kalman_filter} was used on the puck's position.
-The noisy observations of joint positions and velocities were ignored and the reference joint positions and velocities given to the underlying controller at the previous step were used instead.
+% Because of the noise added to the environment during the evaluation a Kalman Filter \cite{kalman_filter} was used on the puck's position.
+% The noisy observations of joint positions and velocities were ignored and the reference joint positions and velocities given to the underlying controller at the previous step were used instead.
 
 \subsection{Action space}
+\label{subseq:action_space}
 Two different approaches were used for modeling the action space.
 
 \textit{Task space control}:
@@ -64,6 +65,7 @@ Reducing the joint acceleration limits solved the joint velocity constraints pro
 
 
 \subsection{Reward function}
+\label{subseq:reward}
 The designed reward is task-dependent, given that a policy is trained for each task. It is also shaped as the success reward of each task is very sparse.
 Generally the reward function introduces a penalty for each violated constraint proportional to its penalty points:
 
@@ -73,7 +75,7 @@ Generally the reward function introduces a penalty for each violated constraint 
 
 where $r_t(s,a)$ is the task-dependent reward and $r_c(s,a)$ is the penalty for violating the constraints.
 
-Additional tasks where designed for learning behaviors useful for a complete game. A \textit{return home} task in which the robot needs to achieve a certain configuration and remain still,
+Additional tasks other than the ones specified in \ref{sec:organization} were designed for learning behaviors useful for a complete game. A \textit{return home} task in which the robot needs to achieve a certain configuration and remain still,
 and a \textit{counter-attack} similar to the \textit{defend} task but gives the robot the possibility to score a goal while defending from the incoming puck.
 
 The reward function $r_t(s,a)$ for each task is now described:
@@ -154,8 +156,6 @@ where angle\_border is the angle between the puck velocity vector and the closes
 
 \textbf{Prepare}:
 The reward function for the prepare task is a sparse reward given at the last step with a high reward (1000) if the task is successful, otherwise -100.
-
-
 
 
 

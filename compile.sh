@@ -4,7 +4,7 @@ filetex="$1.tex"
 fileaux="$1.aux"
 
 # create pdf
-docker run --rm -it -v $(pwd):/workdir texlive/texlive pdflatex $filetex
+# docker run --rm -it -v $(pwd):/workdir texlive/texlive pdflatex $filetex
 docker run --rm -it -v $(pwd):/workdir texlive/texlive bibtex $fileaux
 docker run --rm -it -v $(pwd):/workdir texlive/texlive pdflatex $filetex
 
@@ -13,4 +13,4 @@ docker run --rm -it -v $(pwd):/workdir texlive/texlive pdflatex $filetex
 
 # open pdf
 # okular *.pdf
-brave *.pdf
+# brave $1.pdf

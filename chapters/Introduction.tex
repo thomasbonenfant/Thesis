@@ -1,40 +1,60 @@
 \chapter*{Introduction}
+\label{ch:Introduction}
 
-This document is intended to be both an example of the Polimi \LaTeX{} template for Master Theses,
-as well as a short introduction to its use. It is not intended to be a general introduction to \LaTeX{} itself,
-and the reader is assumed to be familiar with the basics of creating and compiling \LaTeX{} documents (see \cite{oetiker1995not, kottwitz2015latex}). 
-\\
-The cover page of the thesis must contain all the relevant information:
-title of the thesis, name of the Study Programme and School, name of the author,
-student ID number, name of the supervisor, name(s) of the co-supervisor(s) (if any), academic year.
-The above information are provided by filling all the entries in the command \verb|\puttitle{}|
-in the title page section of this template.
-\\
-Be sure to select a title that is meaningful.
-It should contain important keywords to be identified by indexer.
-Keep the title as concise as possible and comprehensible even to people who are not experts in your field.
-The title has to be chosen at the end of your work so that it accurately captures the main subject of the manuscript. 
-\\
-Since a thesis might be a substantial document, it is convenient to break it into chapters.
-You can create a new chapter as done in this template by simply using the following command
-\begin{verbatim}
-\chapter{Title of the chapter}
-\end{verbatim}
-followed by the body text.
-\\
-Especially for long manuscripts, it is recommended to give each chapter its own file.
-In this case, you write your chapter in a separated \verb|chapter_n.tex| file
-and then include it in the main file with the following command
-\begin{verbatim}
-\input{chapter_n.tex}
-\end{verbatim}
-It is recommended to give a label to each chapter by using the command
-\begin{verbatim}
-\label{ch:chapter_name}%
-\end{verbatim}
-where the argument is just a text string that you'll use to reference that part
-as follows: \textit{Chapter~\ref{ch:chapter_one} contains \sc{an introduction to}  \dots}.\\
-If necessary, an unnumbered chapter can be created by
-\begin{verbatim}
-\chapter*{Title of the unnumbered chapter}
-\end{verbatim}
+\section*{Motivation}
+
+Closing the reality gap is a crucial research direction in achieving true embodied intelligence. 
+To attain this goal, multiple factors must be considered: in real-world scenarios, 
+we encounter uncertainties stemming from sensor noise, modeling errors, and delays. 
+Additionally, agents deployed on real robotic systems must operate without damaging their components, the environment, or causing harm to people.
+
+The game of air hockey presents a complex and dynamic challenge where a robotic player must be highly reactive, 
+adhere to constraints, and exhibit long-term planning capabilities. 
+This scenario compels engineers to push the boundaries of robotic capabilities while ensuring safety.
+
+With these challenges in mind, the Robot Air Hockey competition was organized. 
+This competition serves as a platform for researchers in the field of robot learning to engage with a realistic robotic task. 
+Teams participating in the competition design and build their air hockey agents, 
+competing against each other in various subtasks (in simulation) and ultimately in full games (both in simulation and in the real world).
+
+To be successful, an agent must solve multiple sub-problems, such as scoring goals against an opponent, 
+effectively defending its own goal, and devising winning strategies. 
+The inherent sub-problem composition of air hockey inspires this work, where a hierarchical approach to the game is investigated. 
+Reinforcement learning techniques are applied to each sub-problem that contributes to a complete air hockey match. 
+These specialized agents are then integrated into a unified high-level agent that continuously selects the optimal low-level agent to deploy during the match.
+
+\section*{Goal}
+% The goal of this work is to develop an agent capable of playing entire games without violating constraints. The agent has to control a general purpose manipulator
+% and achieve the best possible performance. 
+The goal of this work is to develop an agent capable of playing entire air hockey games while adhering to all operational constraints. Specifically, the agent must control a general-purpose manipulator, achieving the best possible performance
+in terms both of offense and defense.
+It is crucial that the agent maintains these performance levels without violating any constraints, 
+ensuring that no drop in performance or damage concerns arise when deployed on a real robot. The agent must:
+\begin{itemize}
+    \item react quickly and accurately to the puck's movements.
+    \item Maintain strategic positioning and make decisions that balance offensive and defensive play.
+    \item Operate within safety margins, ensuring that the manipulator does not exceed its physical limits or damage constraints.
+\end{itemize}
+
+\section*{Thesis Structure}
+% The thesis starts with a Preliminary background, introducing the main theory of Reinforcement Learning and presents a start-of-art Deep Reinforcement Learning algorithms
+% used for continuous control as well as a brief overview of the Hierarchical reinforcement learning frameworks. 
+% Next it follows with a Related works chapter briefly introducing a trajectory optimization algorithm used for robotics control and describes the main challenges
+% found in applying reinforcement learning techniques to robotics.
+
+% The next chapter describes the Air Hockey competition, its rules and the provided framework. The methodology chapter describes the agents that were used during
+% the competition and an Experimental Results chapter lists the results obtained with an additional section describing improvements made after the competition ended.
+The thesis is structured as follows:
+\begin{enumerate}
+    \item \textbf{Preliminary Background}:
+    This section introduces the main theories of Reinforcement Learning and presents state-of-the-art Deep Reinforcement Learning algorithms 
+    used for continuous control, as well as a brief overview of hierarchical reinforcement learning frameworks.
+    \item \textbf{Related Works}:
+    This chapter reviews existing literature on trajectory optimization algorithms used for robotics control and describes the main challenges in applying reinforcement learning techniques to robotics.
+    \item \textbf{Air Hockey Competition}:
+    This chapter describes the competition, its rules, and the provided framework.
+    \item \textbf{Methodology}:
+    This chapter details the design and implementation of the agents used during the competition, including the hierarchical approach and reinforcement learning techniques applied.
+    \item \textbf{Experimental Results}:
+    This chapter presents the results obtained during the competition and discusses the improvements made post-competition.
+\end{ernumerate}

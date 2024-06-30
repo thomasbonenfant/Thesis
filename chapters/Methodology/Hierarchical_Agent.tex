@@ -1,0 +1,44 @@
+\section{Hierarchical Agent}
+\label{sec:hierarchical_agent}
+For the tournament stage of the competition, an agent capable of playing entire matches is needed.
+Having previously implemented different agents for each task we can play an entire match alternating between these specific agents.
+The difficulty now is to define how to switch between these subpolicies being competitive against an opponent.
+
+To do so, a high-level agent has been developed. 
+This agent decides what policy to execute, based on the observation of the environment and on two main components: the Switcher and the Finite State Machine.
+
+The switcher selects a new policy once the current one has met a termination condition and informed the high level agent.
+This new selected policy is selected according to a set of rules applied on the observation state. The switcher's logic is illustrated in Figure \ref{fig:switcher}.
+The selected policy could potentially be the previous one. This can happen, for example, if the agent performed a prepare but the
+puck is still in an unsuitable position for hitting, a second prepare might be necessary.
+
+The switcher's rules relies on some parameters, therefore it could be trained formulating an optimization problem to find an optimal set of parameters.
+
+% A Switcher based on some well defined rules was designed for switching between subpolicies.
+% Specifically, the switcher selects the supoliciy and draws an action from it until a terminating condition is met, 
+% e.g. the agent finished slowing down after hitting the puck. 
+% Every action drawn from a selected subpolicy is returned to the environment.
+% The switcher's logic is illustrated in Figure \ref{fig:switcher}. It describes the rules to select the subpolicies.
+% The FSM is illustrated in Figure \ref{fig:fsm}.
+% Each state represents a task while each
+% edge is an allowed transition. The agent will always start a match in the \text{Home} state. It
+% is possible to remain in the same state but not switching from a task to another without
+% passing from the \textit{Home} state, even if the switcher might suggest a transition of such kind.
+% and ensures that after every subpolicy terminates it selects the home policy. This forced return
+% to the home position helped adhering more to the constraints that could be violated while switchting from a policy to another. Moreover the policies
+% trained with SAC performed better if the robot started from the home position as it was the initial state of every episode it was trained on.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/switcher.pdf}
+    \caption{Switcher structure.}
+    \label{fig:switcher}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/fsm.pdf}
+    \caption{The Finite State Machine.}
+    \label{fig:fsm}
+\end{figure}

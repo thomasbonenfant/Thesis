@@ -1,0 +1,10 @@
+\section{Noise Filtering}
+\label{sec:noise_filtering}
+
+During the challenge our agents were evaluated on a remote simulator that was slightly different from the local environments we used.
+In order to mimic a real-world scenario this remote simulator introduced disturbances to mimic a real-world scenario that could create problems to our agents.
+
+The noise on the puck observations and the loss of tracking were particularly problematic.
+To solve this problem a  kalman filter \cite{kalman_filter} was used on the puck's position to filter the noise.
+Additionally, the noisy observations of joint positions and velocities were ignored and the reference joint positions and velocities given to the underlying
+controller at the previous step were used as observations instead.
