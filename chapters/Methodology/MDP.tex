@@ -74,6 +74,13 @@ Generally the reward function introduces a penalty for each violated constraint 
 
 where $r_t(s,a)$ is the task-dependent reward and $r_c(s,a)$ is the penalty for violating the constraints.
 
+\begin{equation}
+    r_c(s,a) = \frac{\sum_i \left(\phi_i \cdot \frac{1}{N} \sum_{j=1}^N \sigma_j\right)}{\sum_i \phi_i},
+\end{equation}
+
+where $N$ is the number of violated constraints, $\phi_i$ is the penalty points associated to the violation of constraint $i$
+(described in section \ref{sec:evaluation_metrics}) and $\sigma_i$ is the \textit{slack}, i.e. the difference between the current value
+of the constraint variable and its limit.
 
 Additional tasks other than the ones specified in \ref{sec:organization} were designed for learning behaviors useful for a complete game. A \textit{return home} task in which the robot needs to achieve a certain configuration and remain still,
 and a \textit{counter-attack} similar to the \textit{defend} task but gives the robot the possibility to score a goal while defending from the incoming puck.
