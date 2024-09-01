@@ -1,0 +1,23 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Ball Paddling Robot}}{25}{figure.caption.29}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces ATACOM}}{29}{figure.caption.33}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Planar robot base frame.}}{31}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces KUKA robot base frame.}}{31}{figure.caption.36}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Challenge framework.}}{36}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Control loop.}}{37}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces The air hockey table.}}{38}{figure.caption.40}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Triangle construction for assigning reward after the mallet hit the puck.}}{46}{figure.caption.48}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Triangle computation at step $t$.}}}{46}{subfigure.1.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Puck moving and reward assignment at step $t+1$.}}}{46}{subfigure.1.2}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces SAC Agent with ATACOM.}}{48}{figure.caption.49}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Polar coordinates used in the Rule-based controllers}}{50}{figure.caption.52}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Switcher structure.}}{52}{figure.caption.53}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces The Finite State Machine.}}{52}{figure.caption.54}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Undiscounted return.}}{56}{figure.caption.60}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces PGPE mean return.}}{57}{figure.caption.61}%
+\addvspace {10\p@ }

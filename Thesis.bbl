@@ -1,9 +1,26 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{20}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[air()]{air_hockey_competition}
+Air hockey challenge '23.
+\newblock URL \url{https://air-hockey-challenge.robot-learning.net/}.
+
+\bibitem[D'Eramo et~al.(2021)D'Eramo, Tateo, Bonarini, Restelli, and
+  Peters]{mushroom_rl}
+C.~D'Eramo, D.~Tateo, A.~Bonarini, M.~Restelli, and J.~Peters.
+\newblock Mushroomrl: Simplifying reinforcement learning research.
+\newblock \emph{Journal of Machine Learning Research}, 22\penalty0
+  (131):\penalty0 1--5, 2021.
+\newblock URL \url{http://jmlr.org/papers/v22/18-056.html}.
+
+\bibitem[Fujimoto et~al.(2018)Fujimoto, van Hoof, and Meger]{Fujimoto2018}
+S.~Fujimoto, H.~van Hoof, and D.~Meger.
+\newblock Addressing function approximation error in actor-critic methods,
+  2018.
 
 \bibitem[Haarnoja et~al.(2018{\natexlab{a}})Haarnoja, Zhou, Abbeel, and
   Levine]{SAC}
@@ -21,6 +38,54 @@ T.~Haarnoja, A.~Zhou, K.~Hartikainen, G.~Tucker, S.~Ha, J.~Tan, V.~Kumar,
 \newblock \emph{CoRR}, abs/1812.05905, 2018{\natexlab{b}}.
 \newblock URL \url{http://arxiv.org/abs/1812.05905}.
 
+\bibitem[Hasselt(2010)]{Hasselt2010}
+H.~Hasselt.
+\newblock Double q-learning.
+\newblock In J.~Lafferty, C.~Williams, J.~Shawe-Taylor, R.~Zemel, and
+  A.~Culotta, editors, \emph{Advances in Neural Information Processing
+  Systems}, volume~23. Curran Associates, Inc., 2010.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2010/file/091d584fced301b442654dd8c23b3fc9-Paper.pdf}.
+
+\bibitem[Kober et~al.(2013)Kober, Bagnell, and Peters]{Kober2013}
+J.~Kober, J.~A. Bagnell, and J.~Peters.
+\newblock Reinforcement learning in robotics: A survey.
+\newblock \emph{International Journal of Robotics Research}, 32\penalty0
+  (11):\penalty0 1238--1274, 2013.
+\newblock \doi{10.1177/0278364913495721}.
+
+\bibitem[Laud(2004)]{Laud2004}
+A.~D. Laud.
+\newblock \emph{Theory and application of reward shaping in reinforcement
+  learning}.
+\newblock PhD thesis, USA, 2004.
+\newblock AAI3130966.
+
+\bibitem[Likmeta et~al.(2020)Likmeta, Metelli, Tirinzoni, Giol, Restelli, and
+  Romano]{PGPE_Likmeta}
+A.~Likmeta, A.~M. Metelli, A.~Tirinzoni, R.~Giol, M.~Restelli, and D.~Romano.
+\newblock Combining reinforcement learning with rule-based controllers for
+  transparent and general decision-making in autonomous driving.
+\newblock \emph{Robotics and Autonomous Systems}, 131:\penalty0 103568, 2020.
+\newblock ISSN 0921-8890.
+\newblock \doi{https://doi.org/10.1016/j.robot.2020.103568}.
+\newblock URL
+  \url{https://www.sciencedirect.com/science/article/pii/S0921889020304085}.
+
+\bibitem[Liu et~al.(2021)Liu, Tateo, Bou-Ammar, and Peters]{baseline}
+P.~Liu, D.~Tateo, H.~Bou-Ammar, and J.~Peters.
+\newblock Efficient and reactive planning for high speed robot air hockey.
+\newblock In \emph{2021 IEEE/RSJ International Conference on Intelligent Robots
+  and Systems (IROS)}, pages 586--593, 2021.
+\newblock \doi{10.1109/IROS51168.2021.9636263}.
+
+\bibitem[Liu et~al.(2022)Liu, Tateo, Bou-Ammar, and Peters]{Atacom}
+P.~Liu, D.~Tateo, H.~Bou-Ammar, and J.~Peters.
+\newblock Robot reinforcement learning on the constraint manifold.
+\newblock In A.~Faust, D.~Hsu, and G.~Neumann, editors, \emph{Proceedings of
+  the 5th Conference on Robot Learning}, volume 164 of \emph{Proceedings of
+  Machine Learning Research}, pages 1357--1366. PMLR, 2022.
+
 \bibitem[Mnih et~al.(2013)Mnih, Kavukcuoglu, Silver, Graves, Antonoglou,
   Wierstra, and Riedmiller]{DQN}
 V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~Graves, I.~Antonoglou, D.~Wierstra, and
@@ -29,10 +94,59 @@ V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~Graves, I.~Antonoglou, D.~Wierstra, and
 \newblock \emph{CoRR}, abs/1312.5602, 2013.
 \newblock URL \url{http://arxiv.org/abs/1312.5602}.
 
+\bibitem[Nachum et~al.(2018)Nachum, Gu, Lee, and Levine]{HIRO}
+O.~Nachum, S.~Gu, H.~Lee, and S.~Levine.
+\newblock Data-efficient hierarchical reinforcement learning, 2018.
+
+\bibitem[Narvekar et~al.(2020)Narvekar, Peng, Leonetti, Sinapov, Taylor, and
+  Stone]{CL}
+S.~Narvekar, B.~Peng, M.~Leonetti, J.~Sinapov, M.~E. Taylor, and P.~Stone.
+\newblock Curriculum learning for reinforcement learning domains: A framework
+  and survey, 2020.
+\newblock URL \url{https://arxiv.org/abs/2003.04960}.
+
+\bibitem[Sehnke et~al.(2010)Sehnke, Osendorfer, Rückstieß, Graves, Peters,
+  and Schmidhuber]{PGPE}
+F.~Sehnke, C.~Osendorfer, T.~Rückstieß, A.~Graves, J.~Peters, and
+  J.~Schmidhuber.
+\newblock Parameter-exploring policy gradients.
+\newblock \emph{Neural Networks}, 23\penalty0 (4):\penalty0 551--559, 2010.
+\newblock ISSN 0893-6080.
+\newblock \doi{https://doi.org/10.1016/j.neunet.2009.12.004}.
+\newblock URL
+  \url{https://www.sciencedirect.com/science/article/pii/S0893608009003220}.
+\newblock The 18th International Conference on Artificial Neural Networks,
+  ICANN 2008.
+
+\bibitem[Sutton and Barto(2018)]{Sutton1998}
+R.~S. Sutton and A.~G. Barto.
+\newblock \emph{Reinforcement Learning: An Introduction}.
+\newblock The MIT Press, second edition, 2018.
+
+\bibitem[Todorov et~al.(2012)Todorov, Erez, and Tassa]{MuJoCo}
+E.~Todorov, T.~Erez, and Y.~Tassa.
+\newblock Mujoco: A physics engine for model-based control.
+\newblock In \emph{2012 IEEE/RSJ International Conference on Intelligent Robots
+  and Systems}, pages 5026--5033, 2012.
+\newblock \doi{10.1109/IROS.2012.6386109}.
+
+\bibitem[Vahrenkamp et~al.(2012)Vahrenkamp, Asfour, Metta, Sandini, and
+  Dillmann]{manipulability}
+N.~Vahrenkamp, T.~Asfour, G.~Metta, G.~Sandini, and R.~Dillmann.
+\newblock Manipulability analysis.
+\newblock In \emph{2012 12th IEEE-RAS International Conference on Humanoid
+  Robots (Humanoids 2012)}, pages 568--573, 2012.
+\newblock \doi{10.1109/HUMANOIDS.2012.6651576}.
+
 \bibitem[Watkins(1989)]{Watkins:1989}
 C.~J. C.~H. Watkins.
 \newblock \emph{Learning from Delayed Rewards}.
 \newblock PhD thesis, King's College, Cambridge, UK, May 1989.
 \newblock URL \url{http://www.cs.rhul.ac.uk/~chrisw/new_thesis.pdf}.
+
+\bibitem[Welch et~al.(1995)Welch, Bishop, et~al.]{kalman_filter}
+G.~Welch, G.~Bishop, et~al.
+\newblock An introduction to the kalman filter.
+\newblock 1995.
 
 \end{thebibliography}

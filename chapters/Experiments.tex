@@ -178,3 +178,49 @@ A plot of the mean return of the parameters distribution is illustrated in Figur
     over zero, meaning that the hierarchical agent is consistently winning}
     \label{fig:pgpe_return}
 \end{figure}
+
+Finally, the results of an evaluation over 100 games of 45000 steps each are illustrated in table \ref{table:final_results}. The mean constraint
+violations during the evaluation are illustrated in table \ref{table:final_results_constraints}.
+This results prove that the agent is able to outperform the baseline while keeping the constraints violations relatively low 
+classifying it as \textit{deployable} according section \ref{sec:evaluation_metrics}.
+
+\begin{table}[H]
+    % \caption*{\textbf{Qualifying phase success}}
+    \centering 
+    \begin{tabular}{|c | c | c |}
+    \hline
+    % \rowcolor{bluepoli!40} % comment this line to remove the color
+     \textbf{Games won} & \textbf{Games drawn} & \textbf{Games lost} \T\B \\
+    \hline \hline
+    65 & 8 & 27 \T\B \\
+    \hline
+    \end{tabular}
+    \\[10pt]
+    \caption[Results of the final evaluation.]{Results of the final evaluation over 100 games against the baseline opponent.}
+    \label{table:final_results}
+\end{table}
+
+\begin{table}[H]
+    % \caption*{\textbf{Qualifying phase success}}
+    \centering 
+    \begin{tabular}{|c | c |}
+    \hline
+    % \rowcolor{bluepoli!40} % comment this line to remove the color
+    %  \textbf{Joint velocity constraints} & \textbf{End-effector constraints} & \textbf{Joint position constraints} & \textbf{Link constraints} \T\B \\
+    % \hline \hline
+    \textbf{Joint velocity constraints} & 13.13 \T\B \\
+    \textbf{Joint position constraints} & 1.51 \T\B \\
+    \textbf{End-effector constraints} & 4.16 \T\B \\
+    \textbf{Link constraints constraints} & 1.76 \T\B \\
+    \textbf{Computation time} & 1.04 \B \\
+    
+    \hline
+    \end{tabular}
+    \\[10pt]
+    \caption[Results of the final evaluation - Mean constraint violations.]{Mean constraint violations during the final evaluation over 100 games against the baseline opponent.}
+    \label{table:final_results_constraints}
+\end{table}
+
+
+
+

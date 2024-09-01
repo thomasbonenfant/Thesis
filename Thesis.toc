@@ -1,0 +1,71 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Abstract}{i}{chapter*.2}%
+\contentsline {chapter}{Abstract in lingua italiana}{iii}{chapter*.4}%
+\contentsline {chapter}{Contents\markboth {\MakeUppercase []{Contents}}{\MakeUppercase []{Contents}}}{v}{chapter*.6}%
+\vspace {2em}
+\contentsline {chapter}{Introduction}{1}{chapter*.8}%
+\contentsline {chapter}{\numberline {1}Preliminaries}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Markov Decision Process}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Dynamic Programming }{10}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Policy Evaluation (Prediction)}{11}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Policy Improvement}{11}{subsection.1.2.2}%
+\contentsline {section}{\numberline {1.3}Reinforcement Learning}{13}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Temporal-Difference Learning}{13}{subsection.1.3.1}%
+\contentsline {subsubsection}{Prediction}{13}{subsubsection*.15}%
+\contentsline {subsubsection}{Control}{14}{subsubsection*.17}%
+\contentsline {subsubsection}{Sarsa: On-policy TD Control}{15}{subsubsection*.18}%
+\contentsline {subsubsection}{Q-Learning: Off-policy TD Control}{16}{subsubsection*.19}%
+\contentsline {subsubsection}{Convergence of Sarsa and Q-Learning}{17}{subsubsection*.20}%
+\contentsline {subsection}{\numberline {1.3.2}Reinforcement Learning Taxonomy}{17}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Deep Reinforcement Learning}{19}{subsection.1.3.3}%
+\contentsline {subsubsection}{Soft Actor-Critic}{19}{subsubsection*.23}%
+\contentsline {chapter}{\numberline {2}Related Works}{23}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Controller for the Air Hockey task}{23}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Reinforcement Learning in Robotics}{25}{section.2.2}%
+\contentsline {subsubsection}{Curse of Dimensionality}{25}{subsubsection*.28}%
+\contentsline {subsubsection}{Curse of real-world samples}{26}{subsubsection*.30}%
+\contentsline {subsubsection}{Curse of under-modeling and model uncertainty}{27}{subsubsection*.31}%
+\contentsline {subsubsection}{Curse of goal specification}{27}{subsubsection*.32}%
+\contentsline {section}{\numberline {2.3}ATACOM}{28}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Robot Air Hockey Challenge}{31}{chapter.3}%
+\contentsline {subsection}{\numberline {3.0.1}Air Hockey Game}{32}{subsection.3.0.1}%
+\contentsline {subsection}{\numberline {3.0.2}Motivation}{32}{subsection.3.0.2}%
+\contentsline {section}{\numberline {3.1}Challenge organization}{33}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Warm-Up Stage}{33}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Qualifying Stage}{33}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Tournament Stage}{34}{subsection.3.1.3}%
+\contentsline {subsubsection}{Game Rules}{35}{subsubsection*.37}%
+\contentsline {section}{\numberline {3.2}Framework}{35}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Environments}{36}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Robot models}{38}{subsection.3.2.2}%
+\contentsline {subsubsection}{Planar robot - 3 degrees of freedom}{38}{subsubsection*.41}%
+\contentsline {subsubsection}{KUKA iiwa14 LBR robot}{39}{subsubsection*.43}%
+\contentsline {subsection}{\numberline {3.2.3}Constraints}{39}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Evaluation Metrics}{40}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}Simulator}{41}{subsection.3.2.5}%
+\contentsline {chapter}{\numberline {4}Methodology}{43}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Air hockey as an MDP}{43}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}State space}{43}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Action space}{44}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Reward function}{44}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}SAC Agent}{47}{section.4.2}%
+\contentsline {subsubsection}{Defend and Counter-attack tasks}{48}{subsubsection*.50}%
+\contentsline {subsubsection}{Home task}{49}{subsubsection*.51}%
+\contentsline {section}{\numberline {4.3}RL Optimized Rule-based Agent}{49}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Hierarchical Agent}{50}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Noise Filtering}{51}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Experimental results}{53}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Challenge Results}{53}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Warm up phase}{53}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Qualifying phase}{53}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Tournament}{54}{subsection.5.1.3}%
+\contentsline {section}{\numberline {5.2}Improving the challenge's solution}{55}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Improving the Hit Task}{55}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Improving the Switcher}{56}{subsection.5.2.2}%
+\contentsline {chapter}{\numberline {6}Conclusions and future developments}{59}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Future works}{59}{section.6.1}%
+\vspace {2em}
+\contentsline {chapter}{Bibliography\markboth {\MakeUppercase []{Bibliography}}{\MakeUppercase []{Bibliography}}}{61}{chapter*.66}%
+\contentsline {chapter}{List of Figures}{65}{chapter*.68}%
+\contentsline {chapter}{List of Tables}{67}{chapter*.70}%
+\contentsline {chapter}{List of Acronyms}{69}{chapter*.72}%
